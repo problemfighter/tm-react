@@ -1,2 +1,2 @@
-# tm-react
-TM React Framework for application development
+# TM React
+TM React Framework for application development, Repaidly and Easily. 
