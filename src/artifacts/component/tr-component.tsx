@@ -14,17 +14,17 @@ export default class TRComponent extends Component<any, any> {
 
 
     showProgressbar = () => {
-        this.setState({isShowProgress: true})
+        this.setState({ isShowProgress: true })
     };
 
 
     hideProgressbar = () => {
-        this.setState({isShowProgress: false})
+        this.setState({ isShowProgress: false })
     };
 
-    
+
     showSuccessInfo = (message: String) => {
-        this.setState({message: TRMessageData.success(message)});
+        this.setState({ message: TRMessageData.success(message) });
     };
 
 
@@ -33,6 +33,11 @@ export default class TRComponent extends Component<any, any> {
             message: TRMessageData.failed(message)
         });
     };
+
+
+    private httpCaller() {
+
+    }
 
 
     public renderUI() {
