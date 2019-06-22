@@ -5,5 +5,6 @@ export enum TRHTTPConst {
     GET = "get",
     DELETE = "delete",
     PUT = "put",
+    JSON = "json",
 }
 
