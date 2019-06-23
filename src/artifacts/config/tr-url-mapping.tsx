@@ -2,7 +2,7 @@ import React from 'react';
 import TRClassLoader from '../tr-class-loader';
 
 const TRNotFoundView = TRClassLoader.loadArtifactsView("tr-not-found-view");
-const TRSuspensLOader = TRClassLoader.loadArtifactsView("tr-suspens-loader");
+const TRSuspensLoader = TRClassLoader.loadArtifactsView("tr-suspens-loader");
 
 export default class TRURLMapping {
 
@@ -12,7 +12,7 @@ export default class TRURLMapping {
     }
 
     public getSuspenseLoader() {
-        return (<TRSuspensLOader/>)
+        return (<TRSuspensLoader/>)
     }
 
 }
