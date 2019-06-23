@@ -1,5 +1,5 @@
 
-import React, { Suspense, lazy } from 'react';
+import React, { lazy } from 'react';
 
 
 export default class TRjsLoader {
