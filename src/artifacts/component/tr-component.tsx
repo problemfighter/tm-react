@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react';
 import { TRMessageData } from '../data/tr-message-data';
+import ReactComponent from '../framework/react-component';
 
-export default class TRComponent extends Component<any, any> {
+export default class TRComponent extends ReactComponent<any, any> {
 
     constructor(props: any) {
         super(props);
