@@ -2,8 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Bismillah from './app/bismillah';
+// import Bismillah from './app/bismillah';
 import * as serviceWorker from './serviceWorker';
+
+const fileName = './app/bismillah';
+const Bismillah = React.lazy(() => import(fileName));
+
+
 
 ReactDOM.render(<Bismillah />, document.getElementById('root'));
 
