@@ -9,4 +9,8 @@ export default class TRURLMapping {
         return (<TRNotFoundView/>)
     }
 
+    public getSuspenseLoader() {
+        return (<div>Loading...</div>)
+    }
+
 }

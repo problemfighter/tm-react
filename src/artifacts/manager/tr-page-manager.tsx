@@ -12,7 +12,7 @@ export default class TRPageManager extends ReactComponent<any, any> {
         let urlMapping = new URLMapping();
         return ( 
             <BrowserRouter>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={urlMapping.getSuspenseLoader}>
                     <Switch>
                         <Route component={urlMapping.getNotFoundView} />
                     </Switch>
