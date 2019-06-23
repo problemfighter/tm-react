@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import ReactComponent from "../framework/tr-react-component";
-import { BrowserRouter, Route, Switch, Router } from "react-router-dom";
+import { BrowserRouter, Route, Switch} from "react-router-dom";
 import URLMapping from "../../app/config/url-mapping";
 
 
