@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import TRjsLoader from '../processor/loader/tr-js-loader';
+import TRClassLoader from '../tr-class-loader';
 
 
 export default class TRReactComponent<P, S> extends Component<P, S> {
 
-    public loadClass(className: string): any {
-        return TRjsLoader.load(className);
-    }
 
 }

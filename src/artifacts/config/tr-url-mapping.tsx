@@ -1,5 +1,4 @@
 import React from 'react';
-import TRjsLoader from "../processor/loader/tr-js-loader";
 import TRClassLoader from '../tr-class-loader';
 
 const TRNotFoundView = TRClassLoader.loadArtifactsView("tr-not-found-view");
