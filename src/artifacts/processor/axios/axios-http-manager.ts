@@ -1,13 +1,14 @@
 import TRHTTPManager from "../http/tr-http-manager";
 import TRHTTRequest from "../http/tr-http-request";
 import TRHTTCallback from "../http/tr-http-callback";
-import axios, {AxiosError, AxiosResponse} from 'axios';
+import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
+import AxiosRequestConfigData from "./axios-request-config-data";
 
 export default class AxiosHTTPManager implements TRHTTPManager{
 
 
-    private httpCall() {
-        axios.get('/user?ID=12345').then((response: AxiosResponse) => {
+    private httpCall(request: TRHTTRequest, callback: TRHTTCallback) {
+        axios.request(AxiosRequestConfigData.create(request)).then((response: AxiosResponse) => {
 
         }).catch((error: AxiosError) => {
 
@@ -15,6 +16,7 @@ export default class AxiosHTTPManager implements TRHTTPManager{
 
         });
     }
+
 
    public delete(request: TRHTTRequest, callback: TRHTTCallback): void {
     }
