@@ -1,8 +1,9 @@
-import React from 'react';
 import TRClassLoader from '../tr-class-loader';
+import TRLayoutInfoData from '../data/view/tr-layout-info-data';
+import React, { lazy } from 'react';
 
-const TRNotFoundView = TRClassLoader.loadArtifactsView("tr-not-found-view");
-const TRSuspensLoader = TRClassLoader.loadArtifactsView("tr-suspens-loader");
+const TRNotFoundView = lazy(() => import('./../view/tr-not-found-view'));
+const TRSuspensLoader = lazy(() => import('./../view/tr-suspens-loader'));
 
 export default class TRURLMapping {
 
@@ -13,6 +14,11 @@ export default class TRURLMapping {
 
     public getSuspenseLoader() {
         return (<TRSuspensLoader/>)
+    }
+
+
+    public getLayoutsAndPages() : Array<TRLayoutInfoData>{
+        return []
     }
 
 }

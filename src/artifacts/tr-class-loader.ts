@@ -1,19 +1,26 @@
 
-import { lazy } from 'react';
+import React, { Suspense, lazy } from 'react';
 
 
 export default class TRClassLoader {
 
-    public static loadClass(path: string): any {
-        return lazy(() => import(path));
+    public loadClassImport(path: any) {        
+        return import(path + '');
+    }
+
+    public  loadClass(path: string) {        
+        return lazy(() => {
+            let xyz = new TRClassLoader();
+            return xyz.loadClassImport(path);
+        });
     }
 
     public static loadApp(path: string){
-        return TRClassLoader.loadClass('./../' + path);
+        // return TRClassLoader.loadClass('./../view/tr-not-found-view');
     }
 
     public static loadArtifacts(path: string){
-       return TRClassLoader.loadClass('./' + path);
+    //    return TRClassLoader.loadClass('../app/bismillah');
     }
 
     public static loadArtifactsView(path: string){
