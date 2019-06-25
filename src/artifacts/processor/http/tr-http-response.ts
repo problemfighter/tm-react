@@ -1,9 +1,12 @@
 
-export default class TRHTTResponse {
+export default interface TRHTTResponse {
 
-    public isSuccess: boolean = false;
-    public httpCode: number = 0;
-    public requestData!: object;
-    public headers!: object;
+    isSuccess?: boolean;
+    httpCode?: any;
+    requestData?: any;
+    headers?: any;
+    others?: any;
+    optional1?: any;
+    optional2?: any;
 
 }

@@ -2,12 +2,12 @@ import TRHTTAuthCallback from "./tr-http-auth-callback";
 
 export default class TRHTTRequest {
 
-    public url!: string;
-    public method!: string;
-    public baseURL!: string;
-    public requestData!: object;
-    public headers!: object;
+    public url?: string;
+    public method?: any;
+    public baseURL?: string;
+    public requestData?: any;
+    public headers?: any;
     public timeoutMS: number = 60000;
-    public authCallback!: TRHTTAuthCallback;
+    public authCallback?: TRHTTAuthCallback;
 
 }
