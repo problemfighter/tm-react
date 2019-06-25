@@ -9,9 +9,7 @@ const Bismillah = React.lazy(() => import('./../bismillah'));;
 
 export default class URLMapping extends TRURLMapping {
 
-    public getNotFoundView() {
-        return (<h1>Page not found</h1>)
-    }
+
 
     public getLayoutsAndPages(): Array<TRLayoutInfoData> {
         let pageWithLayout: Array<TRLayoutInfoData> = [];
