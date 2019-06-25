@@ -2,36 +2,35 @@
 import React, { Component } from 'react';
 import { TRMessageData } from '../data/tr-message-data';
 import TRReactComponent from '../framework/tr-react-component';
+import { TRProps, TRState } from '../model/tr-model';
+import TRComponentState from './tr-component-state';
+import AppConfig from '../../app/config/app-config';
 
-export default class TRComponent extends TRReactComponent<any, any> {
+export default class TRComponent<P = TRProps, S = TRState> extends TRReactComponent<any, TRComponentState> {
 
     constructor(props: any) {
         super(props);
-        this.state = {
-            isShowProgress: false,
-            message: null
-        };
     }
 
 
     showProgressbar = () => {
-        this.setState({ isShowProgress: true })
+        this.setState({ showProgress: true })
     };
 
 
     hideProgressbar = () => {
-        this.setState({ isShowProgress: false })
+        this.setState({ showProgress: false })
     };
 
 
     showSuccessInfo = (message: String) => {
-        this.setState({ message: TRMessageData.success(message) });
+        this.setState({ messageData: TRMessageData.success(message) });
     };
 
 
     showErrorInfo = (message: String) => {
         this.setState({
-            message: TRMessageData.failed(message)
+            messageData: TRMessageData.failed(message)
         });
     };
 
@@ -48,8 +47,11 @@ export default class TRComponent extends TRReactComponent<any, any> {
     }
 
     render() {
+        const appConfig = new AppConfig();
+        const state = this.state;
         return (
             <React.Fragment>
+                {appConfig.getBeforeRenderUIView(state)}
                 {this.renderUI()}
             </React.Fragment>
         )

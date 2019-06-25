@@ -36,6 +36,7 @@ export default class AxiosHTTPManager implements TRHTTPManager {
         return headers;
     }
 
+    
     private httpCall(request: TRHTTRequest, callback: TRHTTCallback) {
         axios.request(this.processParams(request)).then((response: AxiosResponse) => {
             callback.success({

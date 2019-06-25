@@ -4,10 +4,13 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import URLMapping from "../../app/config/url-mapping";
 import TRLayoutInfoData from '../data/view/tr-layout-info-data';
 import TRPageInfoData from '../data/view/tr-page-info-data';
+import { TRProps, TRState } from '../model/tr-model';
+import AppConfig from '../../app/config/app-config';
 
 
 
-export default class TRPageManager extends ReactComponent<any, any> {
+
+export default class TRPageManager extends ReactComponent<TRProps, TRState> {
 
     private getRouter(pageInfoData: TRPageInfoData, trLayout: any, index: any) {
         return (
@@ -35,9 +38,10 @@ export default class TRPageManager extends ReactComponent<any, any> {
 
     render() {
         let urlMapping = new URLMapping();
+        let appConfig = new AppConfig();
         return (
             <BrowserRouter>
-                <Suspense fallback={urlMapping.getSuspenseLoader}>
+                <Suspense fallback={appConfig.getSuspenseLoader}>
                     <Switch>
                         {
                             urlMapping.getLayoutsAndPages().map((layoutData: TRLayoutInfoData, index) => {
@@ -46,7 +50,7 @@ export default class TRPageManager extends ReactComponent<any, any> {
                                 }
                             })
                         }
-                        <Route component={urlMapping.getNotFoundView} />
+                        <Route component={appConfig.getNotFoundView} />
                     </Switch>
                 </Suspense>
             </BrowserRouter>
