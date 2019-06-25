@@ -23,17 +23,19 @@ export default class AxiosHTTPManager implements TRHTTPManager {
         if (request.headers !== undefined) {
             processedRequest.headers = request.headers;
         }
-
         return processedRequest;
     }
 
-
-    private addJSONHeader(headers: any): any {
+    private addHeader(headers: any, key:any, value:any): any {
         if (headers === undefined) {
             headers = {};
         }
-        headers['Content-Type'] = 'application/json';
+        headers[key] = value;
         return headers;
+    }
+
+    private addJSONHeader(headers: any): any {
+        return this.addHeader(headers, 'Content-Type', 'application/json');
     }
 
 
