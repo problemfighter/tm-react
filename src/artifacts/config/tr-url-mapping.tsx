@@ -1,6 +1,5 @@
-import TRClassLoader from '../tr-class-loader';
 import TRLayoutInfoData from '../data/view/tr-layout-info-data';
-import React, { lazy } from 'react';
+import React from 'react';
 
 
 

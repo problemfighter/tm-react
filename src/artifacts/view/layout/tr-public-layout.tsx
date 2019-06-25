@@ -1,5 +1,4 @@
 import React from 'react';
-import TRComponent from './../../component/tr-component';
 import TRReactComponent from '../../framework/tr-react-component';
 
 export default class TRPublicLayout extends TRReactComponent<any, any> {

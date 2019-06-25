@@ -1,7 +1,7 @@
 import TRHTTPManager from "../http/tr-http-manager";
 import TRHTTRequest from "../http/tr-http-request";
 import TRHTTCallback from "../http/tr-http-callback";
-import axios, { AxiosError, Method, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { TRHTTPConst } from "../http/tr-http-const";
 
 export default class AxiosHTTPManager implements TRHTTPManager {
@@ -36,8 +36,9 @@ export default class AxiosHTTPManager implements TRHTTPManager {
         return headers;
     }
 
-    
+
     private httpCall(request: TRHTTRequest, callback: TRHTTCallback) {
+        callback.before(request);
         axios.request(this.processParams(request)).then((response: AxiosResponse) => {
             callback.success({
                 isSuccess: true,
