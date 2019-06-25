@@ -28,7 +28,8 @@ export default class TRComponent<P = TRProps, S = TRState> extends TRReactCompon
         return request;
     }
 
-    private createHttpCallBack(success: HTTPCallback, failed: HTTPCallback): TRHTTCallback {
+
+    private createHttpCallBack(request: TRHTTRequest, success?: HTTPCallback, failed?: HTTPCallback): TRHTTCallback {
         let callback: TRHTTCallback = {
             before: (response: TRHTTResponse) => {
                 this.setState({ showProgress: true })
@@ -37,10 +38,18 @@ export default class TRComponent<P = TRProps, S = TRState> extends TRReactCompon
                 if (success !== undefined) {
                     success.callback(response);
                 }
+                if (this.appConfig().isUnauthorized(response)) {
+                    this.setState({ showLoginUI: true })
+                    this.setState({ failedRequestData: request })
+                }
             },
             failed: (response: TRHTTResponse) => {
                 if (failed !== undefined) {
                     failed.callback(response);
+                }
+                if (this.appConfig().isUnauthorized(response)) {
+                    this.setState({ showLoginUI: true })
+                    this.setState({ failedRequestData: request })
                 }
             },
             finally: () => {
@@ -50,22 +59,45 @@ export default class TRComponent<P = TRProps, S = TRState> extends TRReactCompon
         return callback;
     }
 
-    
-
     private httpCaller(): TRHTTPManager {
         return this.appConfig().getHTTPManager()
     }
 
 
-    postToApi(success?: HTTPCallback, failed?: HTTPCallback): void { }
+    postToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.requestData = data;
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().post(request, callback);
+    }
 
-    postJsonToApi(success?: HTTPCallback, failed?: HTTPCallback): void { }
+    postJsonToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.requestData = data;
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().postJSON(request, callback);
+     }
 
-    deleteJsonToApi(success?: HTTPCallback, failed?: HTTPCallback): void { }
 
-    deleteToApi(success?: HTTPCallback, failed?: HTTPCallback): void { }
+    deleteJsonToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.requestData = data;
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().deleteJSON(request, callback);
+     }
 
-    getToApi(success?: HTTPCallback, failed?: HTTPCallback): void { }
+    deleteToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().delete(request, callback);
+     }
+
+
+    getToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().get(request, callback);
+     }
 
 
     showProgressbar = () => {
