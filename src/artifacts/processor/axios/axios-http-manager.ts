@@ -3,6 +3,7 @@ import TRHTTRequest from "../http/tr-http-request";
 import TRHTTCallback from "../http/tr-http-callback";
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { TRHTTPConst } from "../http/tr-http-const";
+import TRHTTResponse from "../http/tr-http-response";
 
 export default class AxiosHTTPManager implements TRHTTPManager {
 
@@ -26,7 +27,7 @@ export default class AxiosHTTPManager implements TRHTTPManager {
         return processedRequest;
     }
 
-    private addHeader(headers: any, key:any, value:any): any {
+    private addHeader(headers: any, key: any, value: any): any {
         if (headers === undefined) {
             headers = {};
         }
@@ -38,25 +39,35 @@ export default class AxiosHTTPManager implements TRHTTPManager {
         return this.addHeader(headers, 'Content-Type', 'application/json');
     }
 
+    private createResponse(isSuccess: boolean, response: any) {
+        return {
+            isSuccess: isSuccess,
+            httpCode: response.status,
+            responsetData: response.data,
+            headers: response.headers,
+            others: response.request,
+            optional1: response.statusText,
+        }
+    }
+
+    private processErrorResponse(error: AxiosError){
+        if(error.response === undefined){
+            let sentResponse: TRHTTResponse = {
+                isSuccess: false,
+                message: error.message,
+            }
+            return sentResponse;
+        }
+      return this.createResponse(false, error.response)
+    }
+
 
     private httpCall(request: TRHTTRequest, callback: TRHTTCallback) {
         callback.before(request);
-        axios.request(this.processParams(request)).then((response: AxiosResponse) => {
-            callback.success({
-                isSuccess: true,
-                httpCode: response.status,
-                requestData: response.data,
-                headers: response.headers,
-                others: response.request,
-                optional1: response.statusText,
-            });
+        axios(this.processParams(request)).then((response: AxiosResponse) => {
+            callback.success(this.createResponse(true, response));
         }).catch((error: AxiosError) => {
-            callback.failed({
-                isSuccess: false,
-                httpCode: error.code,
-                requestData: error.response,
-                others: error.request,
-            });
+            callback.failed(this.processErrorResponse(error));
         }).finally(() => {
             callback.finally();
         });
