@@ -9,4 +9,8 @@ export default class AppConfig extends TRAppConfig {
         return (<h1>Page not found</h1>)
     }
 
+    public getBaseURL(): string {
+        return "http://localhost:1122/";
+    }
+
 }
