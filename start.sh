@@ -8,12 +8,12 @@ echo "Cloning Project Wiki From GitHub";
 git clone https://github.com/hmtmcse/tm-react.wiki.git
 
 echo "Coping Samples";
-if [ -d "app" ]; then
+if [ -d "src/app" ]; then
   rm -rf app
 fi
 
-if [ -d "./../sample/basic" ]; then
-      cp -a ./../sample/basic app
+if [ -d "./sample/basic" ]; then
+      cp -a ./sample/basic src/app
   else
       echo "Unable to Setup Project";
       exit 1
