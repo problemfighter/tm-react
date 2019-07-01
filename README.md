@@ -13,6 +13,7 @@ TM React Framework for application development, Repaidly and Easily.
 6. Run the below command ```yarn start```
 
 
+<br/><br/>
 
 ## Let's Explorer The wiki
 
