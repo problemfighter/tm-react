@@ -3,7 +3,7 @@ TM React Framework for application development, Repaidly and Easily.
 
 
 
-### How to start Project?
+## How to start Project?
 
 1. Make sure you have node installed. https://nodejs.org/en/  (LTS is recommanded)
 2. Make sure you have Git installed in your pc https://git-scm.com/downloads
