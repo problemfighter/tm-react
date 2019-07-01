@@ -11,3 +11,18 @@ TM React Framework for application development, Repaidly and Easily.
 4. Run this command from your terminal or git bash : ``` curl https://raw.githubusercontent.com/hmtmcse/tm-react/master/start.sh -o start.sh && sh start.sh```
 5. If you not get error in your console then please go to the directory named **tm-react**. ```cd tm-react```
 6. Run the below command ```yarn start```
+
+
+
+## Let's Explorer The wiki
+
+1. Basic
+   1. Layout
+   2. Page
+   3. URL Mapping
+2. Basic Authentication Example
+   1. Layout
+   2. Page
+   3. Redirection
+   4. Auth Checking
+3. API Calling

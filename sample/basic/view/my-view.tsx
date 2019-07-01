@@ -4,7 +4,7 @@ import TRComponentState from '../../artifacts/component/tr-component-state';
 
 
 
-export default class Dashboard extends TRComponent<any, TRComponentState> {
+export default class MyView extends TRComponent<any, TRComponentState> {
      renderUI() {
         return (
             <React.Fragment>
