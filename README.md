@@ -16,7 +16,7 @@ TM React Framework for application development, Repaidly and Easily.
 
 ## Let's Explorer The wiki
 
-1. Basic
+1. [Basic](https://github.com/hmtmcse/tm-react/wiki/basic)
    1. Layout
    2. Page
    3. URL Mapping
