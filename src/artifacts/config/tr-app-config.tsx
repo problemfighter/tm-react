@@ -31,7 +31,7 @@ export default class TRAppConfig {
         return "";
     }
 
-    public isUnauthorized (response: TRHTTResponse): boolean {
+    public isUnauthorized (response?: TRHTTResponse): boolean {
         return false;
     }
 

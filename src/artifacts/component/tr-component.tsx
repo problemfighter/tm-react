@@ -9,11 +9,8 @@ import TRHTTRequest from '../processor/http/tr-http-request';
 import TRHTTCallback from '../processor/http/tr-http-callback';
 import TRHTTResponse from '../processor/http/tr-http-response';
 
-export default class TRComponent<P = TRProps, S = TRState> extends TRReactComponent<any, TRComponentState> {
+export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
 
-    constructor(props: any) {
-        super(props);
-    }
 
 
     private appConfig(): AppConfig {
