@@ -10,4 +10,4 @@ TM React Framework for application development, Repaidly and Easily.
 3. In your PC, which place you prefered to store the code, go there and open terminal / git bash
 4. Run this command from your terminal or git bash : ``` curl https://raw.githubusercontent.com/hmtmcse/tm-react/master/start.sh -o start.sh && sh start.sh```
 5. If you not get error in your console then please go to the directory named **tm-react**. ```cd tm-react``
-6. Run the below command ```yarn start``
+6. Run the below command ```yarn start```
