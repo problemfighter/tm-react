@@ -1,16 +1,8 @@
 import React from 'react';
 import TRAppConfig from "../../artifacts/config/tr-app-config";
+import TRHTTResponse from '../../artifacts/processor/http/tr-http-response';
 
 
 export default class AppConfig extends TRAppConfig {
-
-
-    public getNotFoundView() {
-        return (<h1>Page not found</h1>)
-    }
-
-    public getBaseURL(): string {
-        return "http://localhost:1122/";
-    }
 
 }
