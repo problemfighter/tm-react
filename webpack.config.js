@@ -6,7 +6,7 @@ module.exports = {
     entry: {
         main: './src/index.tsx'
     },
-    mode: 'production',
+    mode: 'development',
     module: {
         rules: [
             {
