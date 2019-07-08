@@ -27,9 +27,3 @@ TM React Framework for application development, Repaidly and Easily.
    3. Redirection
    4. Auth Checking
 3. API Calling
-
-
-
-
-
-/usr/bin/sudo /home/serverApp2/bash/jsMySQLDump ab_0e7d1d61_atbl_bitmascot_com /tmp/database_backup.sql
