@@ -1,16 +1,14 @@
 import React, { Suspense } from 'react';
-import ReactComponent from "../framework/tr-react-component";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import URLMapping from "../../app/config/url-mapping";
 import TRLayoutInfoData from '../data/view/tr-layout-info-data';
 import TRPageInfoData from '../data/view/tr-page-info-data';
-import { TRProps, TRState } from '../model/tr-model';
-import AppConfig from '../../app/config/app-config';
+import {TRPageManagerProps, TRPageManagerState} from '../model/tr-model';
+import TRReactComponent from "../framework/tr-react-component";
 
 
 
 
-export default class TRPageManager extends ReactComponent<TRProps, TRState> {
+export default class TRPageManager extends TRReactComponent<TRPageManagerProps, TRPageManagerState> {
 
     private getRouter(pageInfoData: TRPageInfoData, trLayout: any, index: any) {
         return (
@@ -37,8 +35,8 @@ export default class TRPageManager extends ReactComponent<TRProps, TRState> {
 
 
     render() {
-        let urlMapping = new URLMapping();
-        let appConfig = new AppConfig();
+        let urlMapping = this.props.urlMapping;
+        let appConfig = this.props.appConfig;
         return (
             <BrowserRouter>
                 <Suspense fallback={appConfig.getSuspenseLoader}>
