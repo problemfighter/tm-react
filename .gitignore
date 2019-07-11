@@ -22,6 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 *.lock
-/src/app
 .idea
 /tm-react.wiki
