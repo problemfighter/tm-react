@@ -30,17 +30,23 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public componentDidMount() {}
 
-    private setUnsetInputDataError(name: string) {
+
+    private setUnsetInputDataError(name: string, isCustom: boolean = false, isError: boolean = false, errorMessage: string = "") {
         let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
         if (!definition) {
             return
         }
-        let isError: boolean = false;
-        isError = definition.required && !this.state.formData.get(name);
+        if (errorMessage === "") {
+            errorMessage = definition.errorMessage;
+        }
+        if (!isCustom) {
+            isError = definition.required && !this.state.formData.get(name);
+        }
         this.setState((state: any) => {
             let formDefinition = state.formDefinition;
             if (formDefinition.get(name)) {
                 formDefinition.get(name).isError = isError;
+                formDefinition.get(name).errorMessage = errorMessage;
             }
             return {formDefinition: formDefinition};
         });
