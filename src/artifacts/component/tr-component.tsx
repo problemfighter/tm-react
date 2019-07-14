@@ -8,6 +8,9 @@ import TRHTTPManager from '../processor/http/tr-http-manager';
 import TRHTTRequest from '../processor/http/tr-http-request';
 import TRHTTCallback from '../processor/http/tr-http-callback';
 import TRHTTResponse from '../processor/http/tr-http-response';
+import {TrFormDefinitionData} from "../data/tr-form-definition-data";
+import {Simulate} from "react-dom/test-utils";
+import transitionEnd = Simulate.transitionEnd;
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
 
@@ -23,6 +26,94 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         request.baseURL = this.appConfig().getBaseURL();
         request.url = url;
         return request;
+    }
+
+    public componentDidMount() {}
+
+    private setUnsetInputDataError(name: string) {
+        let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
+        if (!definition) {
+            return
+        }
+        let isError: boolean = false;
+        isError = definition.required && !this.state.formData.get(name);
+        this.setState((state: any) => {
+            let formDefinition = state.formDefinition;
+            if (formDefinition.get(name)) {
+                formDefinition.get(name).isError = isError;
+            }
+            return {formDefinition: formDefinition};
+        });
+    }
+
+    public validateFormInput(): boolean {
+        let isValid: boolean = true;
+        if (this.state.formDefinition) {
+            this.state.formDefinition.forEach((definition: TrFormDefinitionData, name: string) => {
+                if (definition.required && !this.state.formData.get(name)) {
+                    isValid = false;
+                    this.setUnsetInputDataError(name);
+                }
+            });
+        }
+        return isValid;
+    }
+
+
+    private onChangeSetInputValue(name: string, value: any) {
+        if (this.state.formData !== undefined) {
+            this.state.formData.set(name, value);
+        }
+    }
+
+    private getInputValue(name: string) {
+        if (this.state.formData && this.state.formData.get(name)) {
+            return this.state.formData.get(name);
+        } else {
+            let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
+            let value = "";
+            if (definition && definition.defaultValue !== "") {
+                value = definition.defaultValue;
+            }
+            return value;
+        }
+    }
+
+    private inputDataHandler(name: string) {
+        let attributes: {[key: string]: any} = {};
+        let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
+        attributes.name = name;
+        attributes.onChange = (event: any) => {
+            event.preventDefault();
+            const target = event.target;
+            const value = target.type === 'checkbox' ? target.checked : target.value;
+            const name = target.name;
+            this.onChangeSetInputValue(name, value);
+            this.setUnsetInputDataError(name);
+        };
+        if (definition && definition.isErrorAttribute){
+            attributes.error = definition.isError;
+        }
+        if (definition && definition.isHelpTextAttribute){
+            attributes.helperText = definition.errorMessage;
+        }
+        attributes.value = this.getInputValue(name);
+        return attributes;
+    }
+
+
+    public handleInputDataChange(name: string){
+        return this.inputDataHandler(name);
+    }
+
+    public addFormDefinition(name: string, fullDefinition?: TrFormDefinitionData) {
+        let definition: TrFormDefinitionData = fullDefinition ? fullDefinition : new TrFormDefinitionData();
+        definition.name = name;
+        this.state.formDefinition.set(name, definition);
+    }
+
+    public setFormDefinition(fullDefinition: Map<string, TrFormDefinitionData>) {
+        this.state.setFormDefinition(fullDefinition);
     }
 
 
