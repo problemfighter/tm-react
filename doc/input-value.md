@@ -23,6 +23,14 @@ errorMessage
 
 
 
-## Flash Message
+## Todo
+1. Flash Message
+2. Pagination
+3. Item Per Page
+4. Sorting
+5. Action Column
+6. Dropdown
+7. Login System with jwt
+8. 
 
 
