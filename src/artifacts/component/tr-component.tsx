@@ -103,6 +103,11 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         if (definition && definition.isHelpTextAttribute){
             attributes.helperText = definition.errorMessage;
         }
+
+        if (definition && definition.required){
+            attributes.required = true;
+        }
+
         attributes.value = this.getInputValue(name);
         return attributes;
     }
