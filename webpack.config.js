@@ -22,7 +22,8 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         chunkFilename: '[name].js',
-        path: path.resolve(__dirname, 'build')
+        path: path.resolve(__dirname, 'build'),
+        publicPath: '/'
     },
     optimization: {
         splitChunks: {
