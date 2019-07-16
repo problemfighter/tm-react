@@ -1,6 +1,6 @@
 export const TrUtil = {
 
-    redirectTo: (url) => {
+    redirectTo: (url: any) => {
         window.location = url;
     },
 
@@ -8,8 +8,8 @@ export const TrUtil = {
         window.location.reload();
     },
 
-    isMatchPathname: (url) => {
-       return window.location.pathname === url;
+    isMatchPathname: (url: any) => {
+        return window.location.pathname === url;
     }
 
 
