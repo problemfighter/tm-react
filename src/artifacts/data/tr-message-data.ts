@@ -1,20 +1,24 @@
 
 export enum Status {
     SUCCESS = "success",
-    FAILED = "error"
+    FAILED = "error",
+    success = "success",
+    warning = "warning",
+    error = "error",
+    info = "info"
 }
 
 export class TRMessageData {
 
     public status: Status;
-    public message: String;
+    public message: string;
 
-    constructor() {
-        this.status = Status.FAILED
-        this.message = "";
+    constructor(message: string, status:Status = Status.FAILED) {
+        this.status = status;
+        this.message = message;
     }
 
-    public setMessage(message:String): TRMessageData {
+    public setMessage(message:string): TRMessageData {
         this.message = message;
         return this;
     }
@@ -24,13 +28,13 @@ export class TRMessageData {
         return this;
     }
 
-    public static success(message: String) {
-        return new TRMessageData().setMessage(message).setStatus(Status.SUCCESS);
+    public static success(message: string) {
+        return new TRMessageData(message).setStatus(Status.SUCCESS);
     }
 
 
-    public static failed(message: String) {
-        return new TRMessageData().setMessage(message).setStatus(Status.FAILED);
+    public static failed(message: string) {
+        return new TRMessageData(message).setStatus(Status.FAILED);
     }
 
 }

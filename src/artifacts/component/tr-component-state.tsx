@@ -8,7 +8,9 @@ export default class TRComponentState implements TRState {
     public init: boolean = false;
     public showProgress: boolean = false;
     public showLoginUI: boolean = false;
-    public messageData?: TRMessageData;
+    public showFlashMessage: boolean = false;
+    public showFlashMessageTimer?: any;
+    public messageData: TRMessageData = TRMessageData.failed("Unexpected Error!");
     public parentComponent?: any;
     public failedRequestData?: TRHTTRequest;
     public formData: Map<string, any> = new Map<string, any>();

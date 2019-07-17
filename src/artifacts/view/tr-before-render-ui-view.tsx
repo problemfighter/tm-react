@@ -5,6 +5,7 @@ import TRReactComponent from '../framework/tr-react-component';
 
 class Props implements TRProps {
     public componentState?: TRComponentState;
+    public component?: any;
 }
 
 export default class TRBeforeRenderUIView extends TRReactComponent<Props, TRState> {

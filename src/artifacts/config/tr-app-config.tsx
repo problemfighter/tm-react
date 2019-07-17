@@ -11,8 +11,8 @@ const TRBeforeRenderUIView = lazy(() => import('../view/tr-before-render-ui-view
 
 export default class TRAppConfig {
 
-    public getBeforeRenderUIView(componentState: TRComponentState) {
-        return (<TRBeforeRenderUIView componentState={componentState} />)
+    public getBeforeRenderUIView(componentState: TRComponentState, component: any) {
+        return (<TRBeforeRenderUIView componentState={componentState} component={component} />)
     }
 
     public getNotFoundView() {

@@ -46,6 +46,50 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
+    public setActionTimer(task: any, terminateAfterMS: number = 5000) {
+        return setTimeout(() => {
+            if (task) {
+                task();
+            }
+        }, terminateAfterMS);
+    }
+
+    public closeFlashMessage(){
+        this.setState({
+            showFlashMessage: false
+        });
+        if (this.state.showFlashMessageTimer) {
+            clearTimeout(this.state.showFlashMessageTimer);
+        }
+    }
+
+    public closeFlashMessageTimer(terminateAfterMS: number = 5000): any {
+        this.setState(state => {
+            let showFlashMessageTimer = this.setActionTimer(() => {
+                this.closeFlashMessage();
+            }, terminateAfterMS);
+            return {showFlashMessageTimer: showFlashMessageTimer}
+        });
+    }
+
+
+    public showErrorFlash(message: string) {
+        this.setState({
+            messageData: TRMessageData.failed(message),
+            showFlashMessage: true
+        });
+        this.closeFlashMessageTimer();
+    }
+
+
+    public showSuccessFlash(message: string) {
+        this.setState({
+            messageData: TRMessageData.success(message),
+            showFlashMessage: true
+        });
+        this.closeFlashMessageTimer();
+    }
+
     private httpRequestData(url: string): TRHTTRequest {
         let request: TRHTTRequest = new TRHTTRequest();
         request.baseURL = this.appConfig().getBaseURL();
@@ -249,18 +293,6 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     };
 
 
-    showSuccessInfo = (message: String) => {
-        this.setState({ messageData: TRMessageData.success(message) });
-    };
-
-
-    showErrorInfo = (message: String) => {
-        this.setState({
-            messageData: TRMessageData.failed(message)
-        });
-    };
-
-
     public renderUI() {
         return (
             <h1>TR React Application View Component</h1>
@@ -270,7 +302,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     render() {
         return (
             <React.Fragment>
-                {this.appConfig().getBeforeRenderUIView(this.state)}
+                {this.appConfig().getBeforeRenderUIView(this.state, this)}
                 {this.renderUI()}
             </React.Fragment>
         )
