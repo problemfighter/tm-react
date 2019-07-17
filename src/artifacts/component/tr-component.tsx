@@ -25,25 +25,29 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
     public sortItemAction(event: any, onClickData: any, callBack?: any): void {
-        if (onClickData && onClickData.fieldName === this.state.orderBy) {
-            if (this.state.sortDirection === SortDirection.ascending) {
-                this.setState({
-                    sortDirection: SortDirection.descending
-                })
-            } else {
-                this.setState({
-                    sortDirection: SortDirection.ascending
-                })
-            }
+        console.log(this.state.sortDirection);
+        console.log(this.state.orderBy);
+
+        let orderBy = this.state.orderBy;
+        let sortDirection = this.state.sortDirection;
+        if (sortDirection === SortDirection.ascending) {
+            sortDirection = SortDirection.descending;
         } else {
-            this.setState({
-                sortDirection: SortDirection.descending,
-                orderBy: onClickData.fieldName,
-            })
+            sortDirection = SortDirection.ascending;
         }
-        if (callBack){
-            callBack();
+        if (onClickData && onClickData.fieldName !== orderBy) {
+            orderBy = onClickData.fieldName;
         }
+        this.setState(status => {
+            return {
+                orderBy: orderBy,
+                sortDirection: sortDirection
+            }
+        }, () => {
+            if (callBack) {
+                callBack();
+            }
+        });
     }
 
     public setActionTimer(task: any, terminateAfterMS: number = 5000) {
@@ -254,20 +258,28 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().post(request, callback);
     }
 
-    postJsonToApi(url: string, data: Map<string, any>, success?: HTTPCallback, failed?: HTTPCallback): void {
+    postJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
-        request.requestData = this.mapToObject(data);
+        if (data instanceof Map) {
+            request.requestData = this.mapToObject(data);
+        } else {
+            request.requestData = data
+        }
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().postJSON(request, callback);
-     }
+    }
 
 
-    deleteJsonToApi(url: string, data: Map<string, any>, success?: HTTPCallback, failed?: HTTPCallback): void {
+    deleteJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
-        request.requestData = this.mapToObject(data);;
+        if (data instanceof Map) {
+            request.requestData = this.mapToObject(data);
+        } else {
+            request.requestData = data
+        }
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().deleteJSON(request, callback);
-     }
+    }
 
     deleteToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
