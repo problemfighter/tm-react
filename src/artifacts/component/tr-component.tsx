@@ -9,14 +9,17 @@ import TRHTTRequest from '../processor/http/tr-http-request';
 import TRHTTCallback from '../processor/http/tr-http-callback';
 import TRHTTResponse from '../processor/http/tr-http-response';
 import {TrFormDefinitionData} from "../data/tr-form-definition-data";
-import {Simulate} from "react-dom/test-utils";
-import transitionEnd = Simulate.transitionEnd;
+
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
 
 
-
     private appConfig(): AppConfig {
+        // @ts-ignore
+        if (this.props.appConfig) {
+            // @ts-ignore
+            return this.props.appConfig
+        }
         return new AppConfig();
     }
 

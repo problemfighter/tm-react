@@ -9,6 +9,7 @@ import TRReactComponent from "../framework/tr-react-component";
 export default class TRPageManager extends TRReactComponent<TRPageManagerProps, TRPageManagerState> {
 
     private getRouter(pageInfoData: TRPageInfoData, trLayout: any, index: any) {
+        const {appConfig} = this.props;
         return (
             <Route
                 exact
@@ -16,7 +17,13 @@ export default class TRPageManager extends TRReactComponent<TRPageManagerProps, 
                 key={index}
                 render={(route) => {
                     const Layout = trLayout;
-                    return (<React.Fragment><Layout component={pageInfoData.component} route={route}/></React.Fragment>)
+                    return (<React.Fragment>
+                        <Layout
+                            component={pageInfoData.component}
+                            route={route}
+                            appConfig={appConfig}
+                        />
+                    </React.Fragment>)
                 }}
             />
         )
