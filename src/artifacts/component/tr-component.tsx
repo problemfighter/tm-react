@@ -9,6 +9,7 @@ import TRHTTRequest from '../processor/http/tr-http-request';
 import TRHTTCallback from '../processor/http/tr-http-callback';
 import TRHTTResponse from '../processor/http/tr-http-response';
 import {TrFormDefinitionData} from "../data/tr-form-definition-data";
+import {SortDirection} from "react-mui-ui/ui/tr-table-header";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
@@ -23,6 +24,27 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         return new AppConfig();
     }
 
+    public sortItemAction(event: any, onClickData: any, callBack?: any): void {
+        if (onClickData && onClickData.fieldName === this.state.orderBy) {
+            if (this.state.sortDirection === SortDirection.ascending) {
+                this.setState({
+                    sortDirection: SortDirection.descending
+                })
+            } else {
+                this.setState({
+                    sortDirection: SortDirection.ascending
+                })
+            }
+        } else {
+            this.setState({
+                sortDirection: SortDirection.descending,
+                orderBy: onClickData.fieldName,
+            })
+        }
+        if (callBack){
+            callBack();
+        }
+    }
 
     private httpRequestData(url: string): TRHTTRequest {
         let request: TRHTTRequest = new TRHTTRequest();
