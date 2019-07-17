@@ -88,6 +88,21 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
+    public mapToObject(map: Map<string, any>): object {
+        let jsonObject: { [key: string]: any } = {};
+        if (map) {
+            map.forEach((value: any, key: any) => {
+                jsonObject[key] = value;
+            });
+            return jsonObject;
+        }
+        return {}
+    }
+
+    public mapToJson(map: Map<string, any>): string {
+        return JSON.stringify(this.mapToObject(map));
+    }
+
     private inputDataHandler(name: string) {
         let attributes: {[key: string]: any} = {};
         let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
@@ -173,17 +188,17 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().post(request, callback);
     }
 
-    postJsonToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+    postJsonToApi(url: string, data: Map<string, any>, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
-        request.requestData = data;
+        request.requestData = this.mapToObject(data);
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().postJSON(request, callback);
      }
 
 
-    deleteJsonToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+    deleteJsonToApi(url: string, data: Map<string, any>, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
-        request.requestData = data;
+        request.requestData = this.mapToObject(data);;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().deleteJSON(request, callback);
      }
