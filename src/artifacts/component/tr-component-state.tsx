@@ -16,6 +16,8 @@ export default class TRComponentState implements TRState {
     public removeNotInFormDefinition: boolean = false;
     public sortDirection: SortDirection = SortDirection.ascending;
     public orderBy: string = "id";
+    public itemList: Array<object> = [];
+    public itemDetails: object = {};
 
     public setSortDirection(sortDirection: SortDirection): TRComponentState{
         this.sortDirection = sortDirection;
