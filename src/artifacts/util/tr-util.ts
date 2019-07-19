@@ -4,6 +4,12 @@ export const TrUtil = {
         window.location = url;
     },
 
+    gotoUrl: (component: any, url: any) => {
+        if (component.props.route.history){
+            component.props.route.history.push(url);
+        }
+    },
+
     hardReload: () => {
         window.location.reload();
     },
