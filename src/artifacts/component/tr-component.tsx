@@ -10,6 +10,7 @@ import TRHTTCallback from '../processor/http/tr-http-callback';
 import TRHTTResponse from '../processor/http/tr-http-response';
 import {TrFormDefinitionData} from "../data/tr-form-definition-data";
 import {SortDirection} from "react-mui-ui/ui/tr-table-header";
+import {TrUtil} from "../util/tr-util";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
@@ -25,9 +26,6 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
     public sortItemAction(event: any, onClickData: any, callBack?: any): void {
-        console.log(this.state.sortDirection);
-        console.log(this.state.orderBy);
-
         let orderBy = this.state.orderBy;
         let sortDirection = this.state.sortDirection;
         if (sortDirection === SortDirection.ascending) {
@@ -159,18 +157,11 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
     public mapToObject(map: Map<string, any>): object {
-        let jsonObject: { [key: string]: any } = {};
-        if (map) {
-            map.forEach((value: any, key: any) => {
-                jsonObject[key] = value;
-            });
-            return jsonObject;
-        }
-        return {}
+       return TrUtil.mapToObject(map);
     }
 
     public mapToJson(map: Map<string, any>): string {
-        return JSON.stringify(this.mapToObject(map));
+        return TrUtil.mapToJson(map);
     }
 
     private inputDataHandler(name: string) {
