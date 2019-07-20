@@ -11,6 +11,7 @@ import TRHTTResponse from '../processor/http/tr-http-response';
 import {TrFormDefinitionData} from "../data/tr-form-definition-data";
 import {SortDirection} from "react-mui-ui/ui/tr-table-header";
 import {TrUtil} from "../util/tr-util";
+import TRHTTAuthCallback from "../processor/http/tr-http-auth-callback";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
@@ -47,6 +48,8 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             }
         });
     }
+
+    componentDidMount() {}
 
     public setActionTimer(task: any, terminateAfterMS: number = 5000) {
         return setTimeout(() => {
@@ -96,10 +99,12 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         let request: TRHTTRequest = new TRHTTRequest();
         request.baseURL = this.appConfig().getBaseURL();
         request.url = url;
+        let authCallback = this.appConfig().authCallback();
+        if (authCallback) {
+            request.authCallback = this.appConfig().authCallback();
+        }
         return request;
     }
-
-    public componentDidMount() {}
 
 
     private setUnsetInputDataError(name: string, isCustom: boolean = false, isError: boolean = false, errorMessage: string = "") {
@@ -238,7 +243,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
     private httpCaller(): TRHTTPManager {
-        return this.appConfig().getHTTPManager()
+        return this.appConfig().getHTTPManager();
     }
 
 

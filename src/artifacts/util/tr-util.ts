@@ -9,7 +9,13 @@ export const TrUtil = {
             component.props.route.history.push(url);
         }
     },
-
+    addDataToObject: (object: any, key: any, value: any) =>{
+        if (object === undefined) {
+            object = {};
+        }
+        object[key] = value;
+        return object;
+    },
     hardReload: () => {
         window.location.reload();
     },

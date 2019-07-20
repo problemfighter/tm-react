@@ -3,6 +3,7 @@ import AxiosHTTPManager from "../processor/axios/axios-http-manager";
 import React, { lazy } from "react";
 import TRComponentState from "../component/tr-component-state";
 import TRHTTResponse from "../processor/http/tr-http-response";
+import TRHTTAuthCallback from "../processor/http/tr-http-auth-callback";
 
 const TRNotFoundView = lazy(() => import('../view/tr-not-found-view'));
 const TRSuspensLoader = lazy(() => import('../view/tr-suspens-loader'));
@@ -25,6 +26,10 @@ export default class TRAppConfig {
 
     public getHTTPManager(): TRHTTPManager {
         return new AxiosHTTPManager();
+    }
+
+    public authCallback(): TRHTTAuthCallback | undefined{
+        return undefined;
     }
 
     public getBaseURL(): string {
