@@ -24,6 +24,23 @@ export const TrUtil = {
         return window.location.pathname === url;
     },
 
+    objectValue: (object: any, defaultValue: any, ...props: string[]) => {
+        let response = object;
+        if (!object) {
+            return defaultValue;
+        } else if (!props.length) {
+            return defaultValue
+        } else {
+            for (let item of props) {
+                if (!response[item]) {
+                    return defaultValue
+                }
+                response = response[item];
+            }
+        }
+        return response;
+    },
+
     mapToJson(map: Map<string, any>): string {
         return JSON.stringify(this.mapToObject(map));
     },
