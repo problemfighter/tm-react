@@ -11,7 +11,6 @@ import TRHTTResponse from '../processor/http/tr-http-response';
 import {TrFormDefinitionData} from "../data/tr-form-definition-data";
 import {SortDirection} from "react-mui-ui/ui/tr-table-header";
 import {TrUtil} from "../util/tr-util";
-import TrStaticData from "../config/tr-static-data";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
@@ -23,7 +22,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             // @ts-ignore
             return this.props.appConfig
         }
-        return TrStaticData.appConfig;
+        return new AppConfig();
     }
 
     public sortItemAction(event: any, onClickData: any, callBack?: any): void {
