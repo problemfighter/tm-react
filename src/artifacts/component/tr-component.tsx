@@ -15,6 +15,8 @@ import {TrUtil} from "../util/tr-util";
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
 
+    // @ts-ignore
+    state: TRComponentState = new TRComponentState();
 
     private appConfig(): AppConfig {
         // @ts-ignore
@@ -22,7 +24,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             // @ts-ignore
             return this.props.appConfig
         }
-        return new AppConfig();
+        return window.appConfig;
     }
 
     public sortItemAction(event: any, onClickData: any, callBack?: any): void {

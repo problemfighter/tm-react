@@ -4,14 +4,17 @@ import TRLayoutInfoData from '../data/view/tr-layout-info-data';
 import TRPageInfoData from '../data/view/tr-page-info-data';
 import {TRPageManagerProps, TRPageManagerState} from '../model/tr-model';
 import TRReactComponent from "../framework/tr-react-component";
-import TrStaticData from "../config/tr-static-data";
+import AppConfig from "../../app/config/app-config";
 
+declare global {
+    interface Window { appConfig: AppConfig; }
+}
 
 export default class TRPageManager extends TRReactComponent<TRPageManagerProps, TRPageManagerState> {
 
     constructor(props: TRPageManagerProps){
         super(props);
-        TrStaticData.appConfig = props.appConfig;
+        window.appConfig = this.props.appConfig;
     }
 
     private getRouter(pageInfoData: TRPageInfoData, trLayout: any, index: any) {
