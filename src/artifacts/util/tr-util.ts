@@ -23,7 +23,9 @@ export const TrUtil = {
     isMatchPathname: (url: any) => {
         return window.location.pathname === url;
     },
-
+    randomString: () => {
+        return Math.random().toString(36).substring(7);
+    },
     objectValue: (object: any, defaultValue: any, ...props: string[]) => {
         let response = object;
         if (!object) {
