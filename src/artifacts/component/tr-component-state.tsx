@@ -20,6 +20,9 @@ export default class TRComponentState implements TRState {
     public orderBy: string = "id";
     public itemList: Array<object> = [];
     public itemDetails: object = {};
+    public maxItem: number = 0;
+    public totalItem: number = 0;
+    public itemOffset: number = 0;
 
     public setSortDirection(sortDirection: SortDirection): TRComponentState{
         this.sortDirection = sortDirection;
