@@ -43,7 +43,7 @@ export default class AxiosHTTPManager implements TRHTTPManager {
         return {
             isSuccess: isSuccess,
             httpCode: response.status,
-            responsetData: response.data,
+            responseData: response.data,
             headers: response.headers,
             others: response.request,
             optional1: response.statusText,
