@@ -4,6 +4,7 @@ import React, { lazy } from "react";
 import TRComponentState from "../component/tr-component-state";
 import TRHTTResponse from "../processor/http/tr-http-response";
 import TRHTTAuthCallback from "../processor/http/tr-http-auth-callback";
+import TRSuspenseView from "../view/tr-suspense-view";
 
 const TRNotFoundView = lazy(() => import('../view/tr-not-found-view'));
 const TRBeforeRenderUIView = lazy(() => import('../view/tr-before-render-ui-view'));
@@ -20,7 +21,7 @@ export default class TRAppConfig {
     }
 
     public getSuspenseLoader() {
-        return (<React.Fragment>Please Wait....</React.Fragment>)
+        return (<TRSuspenseView/>)
     }
 
     public getHTTPManager(): TRHTTPManager {
