@@ -18,6 +18,15 @@ export default class TRLayoutInfoData {
         return this;
     }
 
+    public concatComponent(pageInfoDataList: Array<TRPageInfoData>): TRLayoutInfoData {
+        this.pageInfoDataList = this.pageInfoDataList.concat(pageInfoDataList);
+        return this;
+    }
+
+    public getPageInfoList(): Array<TRPageInfoData> {
+        return this.pageInfoDataList;
+    }
+
     public pageInfoInstance(relativeURL: string, component: any): TRPageInfoData {
         let pageInfo = new TRPageInfoData();
         pageInfo.relativeURL = relativeURL;
