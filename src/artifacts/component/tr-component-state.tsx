@@ -13,7 +13,7 @@ export default class TRComponentState implements TRState {
     public messageData: TRMessageData = TRMessageData.failed("Unexpected Error!");
     public parentComponent?: any;
     public failedRequestData?: TRHTTRequest;
-    public formData: Map<string, any> = new Map<string, any>();
+    public formData:{[key: string]: any} = {};
     public formDefinition: Map<string, TrFormDefinitionData> = new Map<string, TrFormDefinitionData>();
     public removeNotInFormDefinition: boolean = false;
     public sortDirection: SortDirection = SortDirection.ascending;

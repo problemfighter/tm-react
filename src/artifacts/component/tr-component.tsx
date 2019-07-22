@@ -117,7 +117,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             errorMessage = definition.errorMessage;
         }
         if (!isCustom) {
-            isError = definition.required && !this.state.formData.get(name);
+            isError = definition.required && !this.state.formData[name];
         }
         this.setState((state: any) => {
             let formDefinition = state.formDefinition;
@@ -133,7 +133,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         let isValid: boolean = true;
         if (this.state.formDefinition) {
             this.state.formDefinition.forEach((definition: TrFormDefinitionData, name: string) => {
-                if (definition.required && !this.state.formData.get(name)) {
+                if (definition.required && !this.state.formData[name]) {
                     isValid = false;
                     this.setUnsetInputDataError(name);
                 }
@@ -145,13 +145,13 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     private onChangeSetInputValue(name: string, value: any) {
         if (this.state.formData !== undefined) {
-            this.state.formData.set(name, value);
+            this.state.formData[name] = value;
         }
     }
 
     private getInputValue(name: string) {
-        if (this.state.formData && this.state.formData.get(name)) {
-            return this.state.formData.get(name);
+        if (this.state.formData && this.state.formData[name]) {
+            return this.state.formData[name];
         } else {
             let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
             let value = "";
