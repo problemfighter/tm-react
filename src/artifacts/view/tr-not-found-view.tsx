@@ -1,11 +1,9 @@
 import React from 'react';
-import TRComponent from '../component/tr-component';
-import { TRProps } from '../model/tr-model';
-import TRComponentState from '../component/tr-component-state';
+import TRReactComponent from "../framework/tr-react-component";
 
-export default class TRNotFoundView extends TRComponent<TRProps, TRComponentState> {
+export default class TRNotFoundView extends TRReactComponent<any, any> {
 
-    renderUI() {
+    render() {
         return <h1>404 Not Found!!</h1>;;
     }
 

@@ -17,7 +17,7 @@ export default class TRPageManager extends TRReactComponent<TRPageManagerProps, 
         window.appConfig = this.props.appConfig;
     }
 
-    private getRouter(pageInfoData: TRPageInfoData, trLayout: any, index: any) {
+    private getRouter(pageInfoData: TRPageInfoData, Layout: any, index: any) {
         const {appConfig} = this.props;
         return (
             <Route
@@ -25,14 +25,7 @@ export default class TRPageManager extends TRReactComponent<TRPageManagerProps, 
                 path={pageInfoData.relativeURL}
                 key={index}
                 render={(route) => {
-                    const Layout = trLayout;
-                    return (<React.Fragment>
-                        <Layout
-                            component={pageInfoData.component}
-                            route={route}
-                            appConfig={appConfig}
-                        />
-                    </React.Fragment>)
+                    return (<Layout component={pageInfoData.component} route={route} appConfig={appConfig} />)
                 }}
             />
         )
@@ -53,7 +46,7 @@ export default class TRPageManager extends TRReactComponent<TRPageManagerProps, 
         let appConfig = this.props.appConfig;
         return (
             <BrowserRouter>
-                <Suspense fallback={appConfig.getSuspenseLoader}>
+                <Suspense fallback={appConfig.getSuspenseLoader()}>
                     <Switch>
                         {
                             urlMapping.getLayoutsAndPages().map((layoutData: TRLayoutInfoData, index: any) => {
