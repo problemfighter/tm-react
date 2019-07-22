@@ -3,7 +3,7 @@ export default interface TRHTTResponse {
 
     isSuccess?: boolean;
     httpCode?: any;
-    responsetData?: any;
+    responseData?: any;
     headers?: any;
     others?: any;
     message?: any;
