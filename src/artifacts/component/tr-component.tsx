@@ -149,17 +149,22 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
-    private getInputValue(name: string) {
+    public getFormData(name: string, defaultValue: any = "") {
         if (this.state.formData && this.state.formData[name]) {
             return this.state.formData[name];
-        } else {
+        }
+        return defaultValue;
+    }
+
+    private getInputValue(name: string) {
+        let value = this.getFormData(name);
+        if (value === "") {
             let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
-            let value = "";
             if (definition && definition.defaultValue !== "") {
                 value = definition.defaultValue;
             }
-            return value;
         }
+        return value;
     }
 
     public mapToObject(map: Map<string, any>): object {
