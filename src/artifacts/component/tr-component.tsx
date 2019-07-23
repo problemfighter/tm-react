@@ -283,7 +283,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             finally: () => {
                 this.setState({ showProgress: false })
             }
-        }
+        };
         return callback;
     }
 
@@ -292,14 +292,14 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
 
-    postToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+    public postToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         request.requestData = data;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().post(request, callback);
     }
 
-    postFormDataToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
+    public postFormDataToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         let formData = new FormData();
         if (data) {
@@ -319,7 +319,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().post(request, callback);
     }
 
-    postJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
+    public postJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         if (data instanceof Map) {
             request.requestData = this.mapToObject(data);
@@ -331,7 +331,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
 
-    deleteJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
+    public deleteJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         if (data instanceof Map) {
             request.requestData = this.mapToObject(data);
@@ -342,26 +342,26 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().deleteJSON(request, callback);
     }
 
-    deleteToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
+    public deleteToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().delete(request, callback);
      }
 
 
-    getToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
+    public getToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().get(request, callback);
      }
 
 
-    showProgressbar = () => {
+    public showProgressbar = () => {
         this.setState({ showProgress: true })
     };
 
 
-    hideProgressbar = () => {
+    public hideProgressbar = () => {
         this.setState({ showProgress: false })
     };
 
