@@ -1,5 +1,5 @@
 import React from 'react';
-import { TRMessageData } from '../data/tr-message-data';
+import {Status, TRMessageData} from '../data/tr-message-data';
 import TRReactComponent from '../framework/tr-react-component';
 import { TRProps, TRState, HTTPCallback } from '../model/tr-model';
 import TRComponentState from './tr-component-state';
@@ -24,6 +24,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             // @ts-ignore
             return this.props.appConfig
         }
+        // @ts-ignore
         return window.appConfig;
     }
 
@@ -108,7 +109,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
 
-    private setUnsetInputDataError(name: string, isCustom: boolean = false, isError: boolean = false, errorMessage: string = "") {
+    private setUnsetInputDataError(name: string, isError: boolean = false, errorMessage: string = "") {
         let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
         if (!definition) {
             return
@@ -116,9 +117,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         if (errorMessage === "") {
             errorMessage = definition.errorMessage;
         }
-        if (!isCustom) {
-            isError = definition.required && !this.state.formData[name];
+
+        isError = definition.required && !this.state.formData[name];
+        if (definition.customValidation && definition.customValidation.validate) {
+            let response: TRMessageData = definition.customValidation.validate(name, this.state.formData[name], this.state.formData);
+            if (response.status === Status.FAILED) {
+                isError = true;
+                errorMessage = response.message;
+            }
         }
+
         this.setState((state: any) => {
             let formDefinition = state.formDefinition;
             if (formDefinition.get(name)) {
@@ -159,7 +167,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     private getInputValue(name: string) {
         let value = this.getFormData(name);
         if (value === "") {
-            let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
+            let definition: TrFormDefinitionData = this.getFieldDefinition(name);;
             if (definition && definition.defaultValue !== "") {
                 value = definition.defaultValue;
             }
@@ -175,9 +183,13 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         return TrUtil.mapToJson(map);
     }
 
+    private getFieldDefinition(name: string): TrFormDefinitionData | any {
+        return this.state.formDefinition.get(name);
+    }
+
     private inputDataHandler(name: string) {
-        let attributes: {[key: string]: any} = {};
-        let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
+        let attributes: { [key: string]: any } = {};
+        let definition: TrFormDefinitionData = this.getFieldDefinition(name);
         attributes.name = name;
         attributes.onChange = (event: any) => {
             event.preventDefault();
@@ -187,18 +199,25 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             this.onChangeSetInputValue(name, value);
             this.setUnsetInputDataError(name);
         };
-        if (definition && definition.isErrorAttribute){
-            attributes.error = definition.isError;
-        }
-        if (definition && definition.isHelpTextAttribute){
-            attributes.helperText = definition.errorMessage;
+
+        if (definition && definition.isHelpTextAttribute && definition.helpText) {
+            attributes.helperText = definition.helpText;
         }
 
-        if (definition && definition.required){
+        if (definition && definition.isErrorAttribute) {
+            attributes.error = definition.isError;
+            if (definition && definition.isHelpTextAttribute && definition.isError) {
+                attributes.helperText = definition.errorMessage;
+            }
+        }
+
+        if (definition && definition.required) {
             attributes.required = true;
         }
 
-        attributes.value = this.getInputValue(name);
+        if (definition && definition.fillValue) {
+            attributes.value = this.getInputValue(name);
+        }
         return attributes;
     }
 
