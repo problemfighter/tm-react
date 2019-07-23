@@ -152,7 +152,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
 
     private onChangeSetInputValue(name: string, value: any) {
-        if (this.state.formData !== undefined) {
+        if (this.state.formData) {
             this.state.formData[name] = value;
         }
     }
@@ -187,6 +187,19 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         return this.state.formDefinition.get(name);
     }
 
+    private getFilesFromInput(name: string, target: any): Array<File> {
+        let files = new Array<File>();
+        if (this.state.formData && this.state.formData[name] && this.state.formData[name] instanceof FormData) {
+            files = this.state.formData[name];
+        }
+        if (target && target.files) {
+            Array.from(target.files).forEach((file: any) => {
+                files.push(file)
+            });
+        }
+        return files;
+    }
+
     private inputDataHandler(name: string) {
         let attributes: { [key: string]: any } = {};
         let definition: TrFormDefinitionData = this.getFieldDefinition(name);
@@ -194,8 +207,15 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         attributes.onChange = (event: any) => {
             event.preventDefault();
             const target = event.target;
-            const value = target.type === 'checkbox' ? target.checked : target.value;
             const name = target.name;
+            let value;
+            if (target.type === 'file') {
+                value = this.getFilesFromInput(name, target);
+            } else if (target.type === 'checkbox') {
+                value = target.checked;
+            } else {
+                value = target.value;
+            }
             this.onChangeSetInputValue(name, value);
             this.setUnsetInputDataError(name);
         };
@@ -275,6 +295,26 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     postToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         request.requestData = data;
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().post(request, callback);
+    }
+
+    postFormDataToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        let formData = new FormData();
+        if (data) {
+            for (let key in data) {
+                if (data[key] instanceof Array) {
+                    let items: Array<any> = data[key];
+                    items.forEach((value: any) => {
+                        formData.append(key, value);
+                    })
+                } else {
+                    formData.append(key, data[key]);
+                }
+            }
+        }
+        request.requestData = formData;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().post(request, callback);
     }
