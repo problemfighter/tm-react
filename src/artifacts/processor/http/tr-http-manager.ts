@@ -7,4 +7,6 @@ export default interface TRHTTPManager {
     get(request: TRHTTRequest, callback: TRHTTCallback) : void;
     deleteJSON(request: TRHTTRequest, callback: TRHTTCallback) : void;
     delete(request: TRHTTRequest, callback: TRHTTCallback) : void;
+    putJSON(request: TRHTTRequest, callback: TRHTTCallback) : void;
+    put(request: TRHTTRequest, callback: TRHTTCallback) : void;
 }

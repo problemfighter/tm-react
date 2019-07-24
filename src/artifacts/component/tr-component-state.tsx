@@ -1,4 +1,4 @@
-import {TRState} from '../model/tr-model';
+import {TRLastCallData, TRState} from '../model/tr-model';
 import {TRMessageData} from '../data/tr-message-data';
 import TRHTTRequest from '../processor/http/tr-http-request';
 import {TrFormDefinitionData} from "../data/tr-form-definition-data";
@@ -12,7 +12,7 @@ export default class TRComponentState implements TRState {
     public showFlashMessageTimer?: any;
     public messageData: TRMessageData = TRMessageData.failed("Unexpected Error!");
     public parentComponent?: any;
-    public failedRequestData?: TRHTTRequest;
+    public trLastCallData?: TRLastCallData;
     public formData:{[key: string]: any} = {};
     public formDefinition: Map<string, TrFormDefinitionData> = new Map<string, TrFormDefinitionData>();
     public removeNotInFormDefinition: boolean = false;

@@ -87,6 +87,19 @@ export default class AxiosHTTPManager implements TRHTTPManager {
         this.httpCall(request, callback);
     }
 
+    public put(request: TRHTTRequest, callback: TRHTTCallback): void {
+        request.method = TRHTTPConst.PUT;
+        this.httpCall(request, callback);
+    }
+
+
+    public putJSON(request: TRHTTRequest, callback: TRHTTCallback): void {
+        request.method = TRHTTPConst.PUT;
+        request.headers = this.addJSONHeader(request.headers);
+        request.requestData = JSON.stringify(request.requestData);
+        this.httpCall(request, callback);
+    }
+
 
     public get(request: TRHTTRequest, callback: TRHTTCallback): void {
         request.method = TRHTTPConst.GET;

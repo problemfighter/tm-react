@@ -1,7 +1,7 @@
 import React from 'react';
 import {Status, TRMessageData} from '../data/tr-message-data';
 import TRReactComponent from '../framework/tr-react-component';
-import { TRProps, TRState, HTTPCallback } from '../model/tr-model';
+import {TRProps, TRState, HTTPCallback, TRLastCallData} from '../model/tr-model';
 import TRComponentState from './tr-component-state';
 import AppConfig from '../../app/config/app-config';
 import TRHTTPManager from '../processor/http/tr-http-manager';
@@ -14,6 +14,14 @@ import {TrUtil} from "../util/tr-util";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
+
+    private POST: string = "POST";
+    private POST_JSON: string = "POST_JSON";
+    private DELETE: string = "DELETE";
+    private DELETE_JSON: string = "DELETE_JSON";
+    private PUT: string = "PUT";
+    private PUT_JSON: string = "PUT_JSON";
+    private GET: string = "GET";
 
     // @ts-ignore
     state: TRComponentState = new TRComponentState();
@@ -257,31 +265,106 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
 
-    private createHttpCallBack(request: TRHTTRequest, success?: HTTPCallback, failed?: HTTPCallback): TRHTTCallback {
-        let callback: TRHTTCallback = {
+    public resumeHttpRequest(request: TRHTTRequest, callback: TRHTTCallback) {
+        switch (request.method) {
+            case this.POST :
+                this.httpCaller().post(request, callback);
+                break;
+            case this.POST_JSON :
+                this.httpCaller().postJSON(request, callback);
+                break;
+            case this.DELETE :
+                this.httpCaller().delete(request, callback);
+                break;
+            case this.DELETE_JSON :
+                this.httpCaller().deleteJSON(request, callback);
+                break;
+            case this.PUT :
+                this.httpCaller().put(request, callback);
+                break;
+            case this.PUT_JSON :
+                this.httpCaller().putJSON(request, callback);
+                break;
+            case this.GET :
+                this.httpCaller().get(request, callback);
+                break;
+        }
+    }
+
+    private resumeableCallback(success?: HTTPCallback, failed?: HTTPCallback): TRHTTCallback {
+        return {
             before: (response: TRHTTResponse) => {
-                this.setState({ showProgress: true })
+                this.setState({showProgress: true})
             },
             success: (response: TRHTTResponse) => {
                 if (success !== undefined) {
                     success.callback(response);
-                }
-                if (this.appConfig().isUnauthorized(response)) {
-                    this.setState({ showLoginUI: true })
-                    this.setState({ failedRequestData: request })
                 }
             },
             failed: (response: TRHTTResponse) => {
                 if (failed !== undefined) {
                     failed.callback(response);
                 }
-                if (this.appConfig().isUnauthorized(response)) {
-                    this.setState({ showLoginUI: true })
-                    this.setState({ failedRequestData: request })
+            },
+            finally: () => {
+                this.setState({showProgress: false})
+            }
+        };
+    }
+
+    public showLoginUI(){
+        this.setState({ showLoginUI: true });
+    }
+
+    private renewAuthorization(): void {
+        if (this.state.trLastCallData) {
+            let trLastCallData: TRLastCallData = this.state.trLastCallData;
+            if (trLastCallData.request && trLastCallData.resumeableCallback) {
+                this.resumeHttpRequest(trLastCallData.request, trLastCallData.resumeableCallback)
+            }
+        }
+    }
+
+
+    private renewAuthorizationCallBack(): void {
+        const _this = this;
+        this.appConfig().renewAuthorization(
+            {
+                resume(): void {
+                    _this.renewAuthorization();
+                }
+            }
+        )
+    }
+
+    private createHttpCallBack(request: TRHTTRequest, success?: HTTPCallback, failed?: HTTPCallback): TRHTTCallback {
+        let resumeableCallback = this.resumeableCallback(success, failed);
+        let lastCall: TRLastCallData = {
+            resumeableCallback: resumeableCallback,
+            request: request
+        };
+        const _this = this;
+        this.setState({trLastCallData: lastCall});
+        let callback: TRHTTCallback = {
+            before: (response: TRHTTResponse) => {
+                this.setState({showProgress: true})
+            },
+            success: (response: TRHTTResponse) => {
+                if (this.appConfig().isAuthorized(response)) {
+                    resumeableCallback.success(response);
+                } else {
+                    _this.renewAuthorizationCallBack();
+                }
+            },
+            failed: (response: TRHTTResponse) => {
+                if (this.appConfig().isAuthorized(response)) {
+                    resumeableCallback.failed(response);
+                } else {
+                    _this.renewAuthorizationCallBack();
                 }
             },
             finally: () => {
-                this.setState({ showProgress: false })
+                this.setState({showProgress: false})
             }
         };
         return callback;
@@ -294,6 +377,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public postToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.POST;
         request.requestData = data;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().post(request, callback);
@@ -301,6 +385,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public postFormDataToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.POST;
         let formData = new FormData();
         if (data) {
             for (let key in data) {
@@ -321,6 +406,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public postJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.POST_JSON;
         if (data instanceof Map) {
             request.requestData = this.mapToObject(data);
         } else {
@@ -333,6 +419,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public deleteJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.DELETE_JSON;
         if (data instanceof Map) {
             request.requestData = this.mapToObject(data);
         } else {
@@ -344,6 +431,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public deleteToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.DELETE;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().delete(request, callback);
      }
@@ -351,6 +439,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public getToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.GET;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().get(request, callback);
      }

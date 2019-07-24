@@ -5,6 +5,7 @@ import TRComponentState from "../component/tr-component-state";
 import TRHTTResponse from "../processor/http/tr-http-response";
 import TRHTTAuthCallback from "../processor/http/tr-http-auth-callback";
 import TRSuspenseView from "../view/tr-suspense-view";
+import {TRHTTPCall} from "../model/tr-model";
 
 const TRNotFoundView = lazy(() => import('../view/tr-not-found-view'));
 const TRBeforeRenderUIView = lazy(() => import('../view/tr-before-render-ui-view'));
@@ -36,8 +37,12 @@ export default class TRAppConfig {
         return "";
     }
 
-    public isUnauthorized (response?: TRHTTResponse): boolean {
-        return false;
+    public isAuthorized (response?: TRHTTResponse): boolean {
+        return true;
+    }
+
+    public renewAuthorization (trHttpCall: TRHTTPCall): void {
+        trHttpCall.resume();
     }
 
 }
