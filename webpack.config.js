@@ -29,7 +29,9 @@ module.exports = {
         splitChunks: {
             cacheGroups: {
                 default: false,
-                vendors: false,
+                vendors: {
+                    reuseExistingChunk: true
+                },
                 vendor: {
                     name: 'vendor',
                     chunks: 'all',
