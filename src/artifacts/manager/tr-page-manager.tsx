@@ -46,18 +46,16 @@ export default class TRPageManager extends TRReactComponent<TRPageManagerProps, 
         let appConfig = this.props.appConfig;
         return (
             <BrowserRouter>
-                <Suspense fallback={appConfig.getSuspenseLoader()}>
-                    <Switch>
-                        {
-                            urlMapping.getLayoutsAndPages().map((layoutData: TRLayoutInfoData, index: any) => {
-                                if (layoutData.pageInfoDataList.length !== 0) {
-                                    return this.generateURL(layoutData.pageInfoDataList, layoutData, index);
-                                }
-                            })
-                        }
-                        <Route component={appConfig.getNotFoundView}/>
-                    </Switch>
-                </Suspense>
+                <Switch>
+                    {
+                        urlMapping.getLayoutsAndPages().map((layoutData: TRLayoutInfoData, index: any) => {
+                            if (layoutData.pageInfoDataList.length !== 0) {
+                                return this.generateURL(layoutData.pageInfoDataList, layoutData, index);
+                            }
+                        })
+                    }
+                    <Route component={appConfig.getNotFoundView}/>
+                </Switch>
             </BrowserRouter>
         );
     }

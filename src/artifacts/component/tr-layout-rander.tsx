@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import TRReactComponent from '../framework/tr-react-component';
 import {TRProps, TRState} from '../model/tr-model';
 
@@ -15,7 +15,9 @@ export default class TRLayoutRenderer extends TRReactComponent<LayoutRendererPro
         const {route, appConfig} = this.props;
         return (
             <React.Fragment>
-                <Component route={route} appConfig={appConfig}/>
+                <Suspense fallback={appConfig.getSuspenseLoader()}>
+                    <Component route={route} appConfig={appConfig}/>
+                </Suspense>
             </React.Fragment>
         )
     }
