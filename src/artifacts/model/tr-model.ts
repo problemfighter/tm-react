@@ -22,6 +22,7 @@ export interface CustomValidation {
 
 export interface TRHTTPCall {
     resume(): void;
+    getComponent(): any;
 }
 
 export class TRLastCallData {
