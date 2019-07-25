@@ -1,7 +1,7 @@
 import React from 'react';
 import {Status, TRMessageData} from '../data/tr-message-data';
 import TRReactComponent from '../framework/tr-react-component';
-import {TRProps, TRState, HTTPCallback, TRLastCallData, TRHTTPCall} from '../model/tr-model';
+import {TRProps, TRState, HTTPCallback, TRLastCallData, TRHTTPCall, TREvent} from '../model/tr-model';
 import TRComponentState from './tr-component-state';
 import AppConfig from '../../app/config/app-config';
 import TRHTTPManager from '../processor/http/tr-http-manager';
@@ -205,7 +205,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         return files;
     }
 
-    private inputDataHandler(name: string) {
+    private inputDataHandler(name: string, changeEvent?: TREvent) {
         let attributes: { [key: string]: any } = {};
         let definition: TrFormDefinitionData = this.getFieldDefinition(name);
         attributes.name = name;
@@ -223,6 +223,9 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             }
             this.onChangeSetInputValue(name, value);
             this.setUnsetInputDataError(name);
+            if (changeEvent && changeEvent.fire) {
+                changeEvent.fire(event);
+            }
         };
 
         if (definition && definition.isHelpTextAttribute && definition.helpText) {
@@ -247,8 +250,8 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
 
-    public handleInputDataChange(name: string){
-        return this.inputDataHandler(name);
+    public handleInputDataChange(name: string, changeEvent?: TREvent){
+        return this.inputDataHandler(name, changeEvent);
     }
 
     public addFormDefinition(name: string, fullDefinition?: TrFormDefinitionData) {

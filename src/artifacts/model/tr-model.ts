@@ -29,3 +29,7 @@ export class TRLastCallData {
     public resumeableCallback?: TRHTTCallback;
     public request?: TRHTTRequest;
 }
+
+export interface TREvent {
+    fire(event: any): void;
+}
