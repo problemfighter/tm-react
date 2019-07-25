@@ -170,14 +170,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
     private getInputValue(name: string) {
-        let value = this.getFormData(name);
-        if (value === "") {
-            let definition: TrFormDefinitionData = this.getFieldDefinition(name);;
-            if (definition && definition.defaultValue !== "") {
-                value = definition.defaultValue;
-            }
-        }
-        return value;
+        return this.getFormData(name);
     }
 
     public mapToObject(map: Map<string, any>): object {
@@ -241,6 +234,10 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
         if (definition && definition.required) {
             attributes.required = true;
+        }
+
+        if (definition && definition.defaultValue) {
+            attributes.defaultValue = definition.defaultValue;
         }
 
         if (definition && definition.fillValue) {
