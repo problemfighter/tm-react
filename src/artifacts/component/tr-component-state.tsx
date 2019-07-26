@@ -14,6 +14,7 @@ export default class TRComponentState implements TRState {
     public parentComponent?: any;
     public trLastCallData?: TRLastCallData;
     public formData:{[key: string]: any} = {};
+    public queryCondition:{[key: string]: any} = {};
     public formDefinition: Map<string, TrFormDefinitionData> = new Map<string, TrFormDefinitionData>();
     public removeNotInFormDefinition: boolean = false;
     public sortDirection: SortDirection = SortDirection.ascending;
