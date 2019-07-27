@@ -96,7 +96,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
 
     public redirect(url: any) {
-        TrUtil.gotoUrl(this, "/user");
+        TrUtil.gotoUrl(this, url);
     }
 
     public successRedirect(url: any, message: string) {
@@ -408,6 +408,14 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().post(request, callback);
     }
 
+    public putToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.PUT;
+        request.requestData = data;
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().put(request, callback);
+    }
+
     public postFormDataToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         request.method = this.POST;
@@ -439,6 +447,18 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().postJSON(request, callback);
+    }
+
+    public putJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.PUT;
+        if (data instanceof Map) {
+            request.requestData = this.mapToObject(data);
+        } else {
+            request.requestData = data
+        }
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().putJSON(request, callback);
     }
 
 
