@@ -7,7 +7,9 @@ export const TrUtil = {
     gotoUrl: (component: any, url: any) => {
         if (component.props.route.history){
             component.props.route.history.push(url);
+            return true;
         }
+        return false;
     },
     addDataToObject: (object: any, key: any, value: any) =>{
         if (object === undefined) {

@@ -11,6 +11,7 @@ import TRHTTResponse from '../processor/http/tr-http-response';
 import {TrFormDefinitionData} from "../data/tr-form-definition-data";
 import {SortDirection} from "react-mui-ui/ui/tr-table-header";
 import {TrUtil} from "../util/tr-util";
+import TRStaticHolder from "../util/tr-static-holder";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
@@ -75,7 +76,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
-    public closeFlashMessageTimer(terminateAfterMS: number = 5000): any {
+    public closeFlashMessageTimer(terminateAfterMS: number = 10000): any {
         this.setState(state => {
             let showFlashMessageTimer = this.setActionTimer(() => {
                 this.closeFlashMessage();
@@ -93,6 +94,31 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.closeFlashMessageTimer();
     }
 
+
+    public redirect(url: any) {
+        TrUtil.gotoUrl(this, "/user");
+    }
+
+    public successRedirect(url: any, message: string) {
+        TRStaticHolder.addMessageData(message, false);
+        this.redirect(url);
+    }
+
+    public failedRedirect(url: any, message: string) {
+        TRStaticHolder.addMessageData(message, false);
+        this.redirect(url);
+    }
+
+    public showRedirectMessage() {
+        if (TRStaticHolder.message.message) {
+            if (TRStaticHolder.message.isSuccess) {
+                this.showSuccessFlash(TRStaticHolder.message.message)
+            } else {
+                this.showErrorFlash(TRStaticHolder.message.message)
+            }
+        }
+        TRStaticHolder.message = {};
+    }
 
     public showSuccessFlash(message: string) {
         this.setState({
