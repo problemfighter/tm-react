@@ -107,7 +107,6 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public getRedirectData() {
         let data = TRStaticHolder.tempData[this.REDIRECT_DATA];
-        delete TRStaticHolder.tempData[this.REDIRECT_DATA];
         return data;
     }
 
