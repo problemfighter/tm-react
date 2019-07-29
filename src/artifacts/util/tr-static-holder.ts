@@ -8,6 +8,6 @@ export default class TRStaticHolder {
     }
 
     static addTempData(key: string, tempData: any) {
-        this.tempData.key = tempData;
+        this.tempData[key] = tempData;
     }
 }
