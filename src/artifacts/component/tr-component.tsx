@@ -20,6 +20,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     private DELETE: string = "delete";
     private PUT: string = "put";
     private GET: string = "get";
+    private REDIRECT_DATA: string = "REDIRECT_DATA";
 
     // @ts-ignore
     state: TRComponentState = new TRComponentState();
@@ -97,6 +98,17 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public redirect(url: any) {
         TrUtil.gotoUrl(this, url);
+    }
+
+    public redirectWithData(url: any, data: any) {
+        TRStaticHolder.addTempData(this.REDIRECT_DATA, data);
+        this.redirect(url);
+    }
+
+    public getRedirectData() {
+        let data = TRStaticHolder.tempData[this.REDIRECT_DATA];
+        delete TRStaticHolder.tempData[this.REDIRECT_DATA];
+        return data;
     }
 
     public successRedirect(url: any, message: string) {
