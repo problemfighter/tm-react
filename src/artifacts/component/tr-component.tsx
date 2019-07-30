@@ -241,7 +241,6 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         let definition: TrFormDefinitionData = this.getFieldDefinition(name);
         attributes.name = name;
         attributes.onChange = (event: any) => {
-            event.preventDefault();
             const target = event.target;
             const name = target.name;
             let value;
