@@ -8,17 +8,18 @@ export interface LayoutRendererProps extends TRProps {
     appConfig: any
     component: any
     suspenseLoader?: any
+    customOperation?: any
 }
 
 export default class TRLayoutRenderer extends TRReactComponent<LayoutRendererProps, TRState> {
     render() {
         const Component = this.props.component;
-        const {route, appConfig, suspenseLoader} = this.props;
+        const {route, appConfig, suspenseLoader, customOperation} = this.props;
         const suspense = suspenseLoader ? suspenseLoader : appConfig.getSuspenseLoader();
         return (
             <React.Fragment>
                 <Suspense fallback={suspense}>
-                    <Component route={route} appConfig={appConfig}/>
+                    <Component route={route} appConfig={appConfig} customOperation={customOperation}/>
                 </Suspense>
             </React.Fragment>
         )
