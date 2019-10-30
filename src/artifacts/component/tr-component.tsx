@@ -180,11 +180,25 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         });
     }
 
+    private checkCustomValidation(definition: TrFormDefinitionData, name:any): boolean {
+        let isValid: boolean = this.state.formData[name];
+        if (definition.customValidation && definition.customValidation.validate) {
+            let response: TRMessageData = definition.customValidation.validate(name, this.state.formData[name], this.state.formData);
+            if (response.status === Status.FAILED) {
+                isValid = false;
+            }
+        }
+        return isValid
+    }
+
     public validateFormInput(): boolean {
         let isValid: boolean = true;
         if (this.state.formDefinition) {
             this.state.formDefinition.forEach((definition: TrFormDefinitionData, name: string) => {
                 if (definition.required && !this.state.formData[name]) {
+                    isValid = false;
+                    this.setUnsetInputDataError(name);
+                } else if (definition.customValidation && !this.checkCustomValidation(definition, name)) {
                     isValid = false;
                     this.setUnsetInputDataError(name);
                 }
