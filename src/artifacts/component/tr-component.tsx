@@ -112,7 +112,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
     public successRedirect(url: any, message: string) {
-        TRStaticHolder.addMessageData(message, false);
+        TRStaticHolder.addMessageData(message, true);
         this.redirect(url);
     }
 
