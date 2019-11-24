@@ -170,7 +170,11 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
                 errorMessage = response.message;
             }
         }
+        this.updateFormDefinitionData(name, isError, errorMessage)
+    }
 
+
+    private updateFormDefinitionData(name: string, isError: boolean = false, errorMessage: string = ""){
         this.setState((state: any) => {
             let formDefinition = state.formDefinition;
             if (formDefinition.get(name)) {
@@ -179,6 +183,13 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             }
             return {formDefinition: formDefinition};
         });
+    }
+
+    private removeValidationError(name: string) {
+        let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
+        if (definition && definition.isError) {
+            this.updateFormDefinitionData(name, false);
+        }
     }
 
     public validateApiResponseData(apiResponse: any) {
@@ -228,6 +239,9 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     private onChangeSetInputValue(name: string, value: any) {
         if (this.state.formData) {
             this.state.formData[name] = value;
+            this.setState<never>({
+                ["_input_data_" + name]: value,
+            });
         }
     }
 
@@ -282,10 +296,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             } else {
                 value = target.value;
             }
+            this.removeValidationError(name);
             this.onChangeSetInputValue(name, value);
-            this.setUnsetInputDataError(name);
             if (changeEvent && changeEvent.fire) {
                 changeEvent.fire(event);
+            }
+        };
+
+        attributes.onBlur = (event: any) => {
+            if (event && event.target && event.target.name) {
+                this.setUnsetInputDataError(event.target.name);
             }
         };
 
