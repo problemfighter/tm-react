@@ -325,7 +325,10 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             attributes.defaultValue = definition.defaultValue;
         }
 
-        if (definition && definition.fillValue) {
+
+        if (!definition && name) {
+            attributes.value = this.getInputValue(name);
+        } else if (definition && definition.fillValue) {
             attributes.value = this.getInputValue(name);
         }
         return attributes;
