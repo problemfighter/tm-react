@@ -12,7 +12,6 @@ import {TrFormDefinitionData} from "../data/tr-form-definition-data";
 import {SortDirection} from "react-mui-ui/ui/tr-table-header";
 import {TrUtil} from "../util/tr-util";
 import TRStaticHolder from "../util/tr-static-holder";
-import {AppConstant} from "core-app/src/system/app-constant";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
@@ -192,20 +191,18 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
-    public validateApiResponseData(apiResponse: any) {
-        if (apiResponse.status == AppConstant.STATUS_ERROR && apiResponse.error && apiResponse.error.fields.length !== 0) {
-            apiResponse.error.fields.map((field: any) => {
-                let name = field.fieldName;
-                let message = field.message;
-                if (this.state.formDefinition.get(name) === undefined){
-                    this.addFormDefinition(name, new TrFormDefinitionData({
-                        required: true,
-                        errorMessage: message,
-                    }));
-                }
-                this.setUnsetInputDataError(name, true, message);
-            })
-        }
+    public validateApiResponseData(errors: Array<object>) {
+        errors.map((field: any) => {
+            let name = field.fieldName;
+            let message = field.message;
+            if (this.state.formDefinition.get(name) === undefined){
+                this.addFormDefinition(name, new TrFormDefinitionData({
+                    required: true,
+                    errorMessage: message,
+                }));
+            }
+            this.setUnsetInputDataError(name, true, message);
+        })
     }
 
     private checkCustomValidation(definition: TrFormDefinitionData, name:any): boolean {
