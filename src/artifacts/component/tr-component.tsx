@@ -58,7 +58,8 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         });
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     public setActionTimer(task: any, terminateAfterMS: number = 5000) {
         return setTimeout(() => {
@@ -68,7 +69,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }, terminateAfterMS);
     }
 
-    public closeFlashMessage(){
+    public closeFlashMessage() {
         this.setState({
             showFlashMessage: false
         });
@@ -173,7 +174,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
 
-    private updateFormDefinitionData(name: string, isError: boolean = false, errorMessage: string = ""){
+    private updateFormDefinitionData(name: string, isError: boolean = false, errorMessage: string = "") {
         this.setState((state: any) => {
             let formDefinition = state.formDefinition;
             if (formDefinition.get(name)) {
@@ -195,7 +196,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         errors.map((field: any) => {
             let name = field.fieldName;
             let message = field.message;
-            if (this.state.formDefinition.get(name) === undefined){
+            if (this.state.formDefinition.get(name) === undefined) {
                 this.addFormDefinition(name, new TrFormDefinitionData({
                     required: true,
                     errorMessage: message,
@@ -205,8 +206,8 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         })
     }
 
-    private checkCustomValidation(definition: TrFormDefinitionData, name:any): boolean {
-        let isValid: boolean = this.state.formData[name];
+    private checkCustomValidation(definition: TrFormDefinitionData, name: any): boolean {
+        let isValid: boolean = true;
         if (definition.customValidation && definition.customValidation.validate) {
             let response: TRMessageData = definition.customValidation.validate(name, this.state.formData[name], this.state.formData);
             if (response.status === Status.FAILED) {
@@ -254,7 +255,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
     public mapToObject(map: Map<string, any>): object {
-       return TrUtil.mapToObject(map);
+        return TrUtil.mapToObject(map);
     }
 
     public mapToJson(map: Map<string, any>): string {
@@ -335,7 +336,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
 
-    public handleInputDataChange(name: string, changeEvent?: TREvent){
+    public handleInputDataChange(name: string, changeEvent?: TREvent) {
         return this.inputDataHandler(name, changeEvent);
     }
 
@@ -388,16 +389,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         };
     }
 
-    public showLoginUI(){
-        this.setState({ showLoginUI: true });
+    public showLoginUI() {
+        this.setState({showLoginUI: true});
     }
 
-    public showProgress(){
-        this.setState({ showProgress: true });
+    public showProgress() {
+        this.setState({showProgress: true});
     }
 
-    public hideProgress(){
-        this.setState({ showProgress: false });
+    public hideProgress() {
+        this.setState({showProgress: false});
     }
 
     private renewAuthorization(): void {
@@ -541,7 +542,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         request.method = this.DELETE;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().delete(request, callback);
-     }
+    }
 
 
     public getToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
@@ -549,16 +550,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         request.method = this.GET;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().get(request, callback);
-     }
+    }
 
 
     public showProgressbar = () => {
-        this.setState({ showProgress: true })
+        this.setState({showProgress: true})
     };
 
 
     public hideProgressbar = () => {
-        this.setState({ showProgress: false })
+        this.setState({showProgress: false})
     };
 
 
