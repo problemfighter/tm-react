@@ -243,6 +243,12 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
+    public setDefaultInputValue(name: string, value: any) {
+        if (this.state.formData) {
+            this.state.formData[name] = value;
+        }
+    }
+
     public getFormData(name: string, defaultValue: any = "") {
         if (this.state.formData && this.state.formData[name]) {
             return this.state.formData[name];
