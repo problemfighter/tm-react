@@ -1,7 +1,7 @@
 import React from 'react';
 import {Status, TRMessageData} from '../data/tr-message-data';
 import TRReactComponent from '../framework/tr-react-component';
-import {TRProps, TRState, HTTPCallback, TRLastCallData, TRHTTPCall, TREvent} from '../model/tr-model';
+import {HTTPCallback, TREvent, TRHTTPCall, TRLastCallData, TRProps} from '../model/tr-model';
 import TRComponentState from './tr-component-state';
 import AppConfig from '../../app/config/app-config';
 import TRHTTPManager from '../processor/http/tr-http-manager';
@@ -58,7 +58,8 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         });
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     public setActionTimer(task: any, terminateAfterMS: number = 5000) {
         return setTimeout(() => {
@@ -68,7 +69,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }, terminateAfterMS);
     }
 
-    public closeFlashMessage(){
+    public closeFlashMessage() {
         this.setState({
             showFlashMessage: false
         });
@@ -169,7 +170,11 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
                 errorMessage = response.message;
             }
         }
+        this.updateFormDefinitionData(name, isError, errorMessage)
+    }
 
+
+    private updateFormDefinitionData(name: string, isError: boolean = false, errorMessage: string = "") {
         this.setState((state: any) => {
             let formDefinition = state.formDefinition;
             if (formDefinition.get(name)) {
@@ -180,8 +185,29 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         });
     }
 
-    private checkCustomValidation(definition: TrFormDefinitionData, name:any): boolean {
-        let isValid: boolean = this.state.formData[name];
+    private removeValidationError(name: string) {
+        let definition: TrFormDefinitionData | undefined = this.state.formDefinition.get(name);
+        if (definition && definition.isError) {
+            this.updateFormDefinitionData(name, false);
+        }
+    }
+
+    public validateApiResponseData(errors: Array<object>) {
+        errors.map((field: any) => {
+            let name = field.fieldName;
+            let message = field.message;
+            if (this.state.formDefinition.get(name) === undefined) {
+                this.addFormDefinition(name, new TrFormDefinitionData({
+                    required: true,
+                    errorMessage: message,
+                }));
+            }
+            this.setUnsetInputDataError(name, true, message);
+        })
+    }
+
+    private checkCustomValidation(definition: TrFormDefinitionData, name: any): boolean {
+        let isValid: boolean = true;
         if (definition.customValidation && definition.customValidation.validate) {
             let response: TRMessageData = definition.customValidation.validate(name, this.state.formData[name], this.state.formData);
             if (response.status === Status.FAILED) {
@@ -211,6 +237,15 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     private onChangeSetInputValue(name: string, value: any) {
         if (this.state.formData) {
             this.state.formData[name] = value;
+            this.setState<never>({
+                ["_input_data_" + name]: value,
+            });
+        }
+    }
+
+    public setDefaultInputValue(name: string, value: any) {
+        if (this.state.formData) {
+            this.state.formData[name] = value;
         }
     }
 
@@ -226,7 +261,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
     public mapToObject(map: Map<string, any>): object {
-       return TrUtil.mapToObject(map);
+        return TrUtil.mapToObject(map);
     }
 
     public mapToJson(map: Map<string, any>): string {
@@ -265,10 +300,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             } else {
                 value = target.value;
             }
+            this.removeValidationError(name);
             this.onChangeSetInputValue(name, value);
-            this.setUnsetInputDataError(name);
             if (changeEvent && changeEvent.fire) {
                 changeEvent.fire(event);
+            }
+        };
+
+        attributes.onBlur = (event: any) => {
+            if (event && event.target && event.target.name) {
+                this.setUnsetInputDataError(event.target.name);
             }
         };
 
@@ -291,14 +332,17 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             attributes.defaultValue = definition.defaultValue;
         }
 
-        if (definition && definition.fillValue) {
+
+        if (!definition && name) {
+            attributes.value = this.getInputValue(name);
+        } else if (definition && definition.fillValue) {
             attributes.value = this.getInputValue(name);
         }
         return attributes;
     }
 
 
-    public handleInputDataChange(name: string, changeEvent?: TREvent){
+    public handleInputDataChange(name: string, changeEvent?: TREvent) {
         return this.inputDataHandler(name, changeEvent);
     }
 
@@ -351,16 +395,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         };
     }
 
-    public showLoginUI(){
-        this.setState({ showLoginUI: true });
+    public showLoginUI() {
+        this.setState({showLoginUI: true});
     }
 
-    public showProgress(){
-        this.setState({ showProgress: true });
+    public showProgress() {
+        this.setState({showProgress: true});
     }
 
-    public hideProgress(){
-        this.setState({ showProgress: false });
+    public hideProgress() {
+        this.setState({showProgress: false});
     }
 
     private renewAuthorization(): void {
@@ -504,7 +548,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         request.method = this.DELETE;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().delete(request, callback);
-     }
+    }
 
 
     public getToApi(url: string, success?: HTTPCallback, failed?: HTTPCallback): void {
@@ -512,16 +556,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         request.method = this.GET;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().get(request, callback);
-     }
+    }
 
 
     public showProgressbar = () => {
-        this.setState({ showProgress: true })
+        this.setState({showProgress: true})
     };
 
 
     public hideProgressbar = () => {
-        this.setState({ showProgress: false })
+        this.setState({showProgress: false})
     };
 
 
