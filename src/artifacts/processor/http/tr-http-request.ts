@@ -7,7 +7,7 @@ export default class TRHTTRequest {
     public baseURL?: string;
     public requestData?: any;
     public headers?: any;
-    public timeoutMS: number = 60000;
+    public timeoutMS: number = 0;
     public authCallback?: TRHTTAuthCallback;
 
 }
