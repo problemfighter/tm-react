@@ -141,9 +141,13 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.closeFlashMessageTimer();
     }
 
+    public getBaseUrl(): string {
+        return this.appConfig().getBaseURL();
+    }
+
     private httpRequestData(url: string): TRHTTRequest {
         let request: TRHTTRequest = new TRHTTRequest();
-        request.baseURL = this.appConfig().getBaseURL();
+        request.baseURL = this.getBaseUrl();
         request.url = url;
         let authCallback = this.appConfig().authCallback();
         if (authCallback) {
