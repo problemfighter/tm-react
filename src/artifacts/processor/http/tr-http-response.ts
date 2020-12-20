@@ -9,4 +9,7 @@ export default interface TRHTTResponse {
     message?: any;
     optional1?: any;
     optional2?: any;
+
+    error?: any;
+    status?: any;
 }
