@@ -510,6 +510,19 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().post(request, callback);
     }
 
+    public postJsonDataToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.POST;
+        if (data instanceof Map) {
+            request.requestData = this.mapToObject(data);
+        } else {
+            request.requestData = data
+        }
+        request.requestData = TrUtil.makeDataObject(request.requestData);
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().postJSON(request, callback);
+    }
+
     public postJsonToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         request.method = this.POST;
@@ -552,6 +565,14 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         request.method = this.DELETE;
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().delete(request, callback);
+    }
+
+    public getToApiByParams(url: string, queryParams: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.params = queryParams
+        request.method = this.GET;
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().get(request, callback);
     }
 
 

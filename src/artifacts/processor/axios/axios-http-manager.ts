@@ -18,6 +18,7 @@ export default class AxiosHTTPManager implements TRHTTPManager {
             baseURL: request.baseURL,
             method: request.method,
             data: request.requestData,
+            params: request.params,
             timeout: request.timeoutMS,
         }
 

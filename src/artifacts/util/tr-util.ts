@@ -58,6 +58,11 @@ export const TrUtil = {
             return jsonObject;
         }
         return {}
+    },
+    makeDataObject(object: object): object {
+        let dataObject: { [key: string]: any } = {};
+        dataObject['data'] = object;
+        return dataObject;
     }
 
 
