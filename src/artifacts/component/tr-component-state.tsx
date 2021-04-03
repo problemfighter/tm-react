@@ -19,6 +19,7 @@ export default class TRComponentState implements TRState {
     public removeNotInFormDefinition: boolean = false;
     public sortDirection: SortDirection = SortDirection.descending;
     public orderBy: string = "id";
+    public search?: string;
     public itemList: Array<object> = [];
     public itemDetails: object = {};
     public maxItem: number = 20;
