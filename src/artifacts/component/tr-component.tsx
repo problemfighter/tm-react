@@ -567,7 +567,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().delete(request, callback);
     }
 
-    public getToApiByParams(url: string, queryParams: object, success?: HTTPCallback, failed?: HTTPCallback): void {
+    public getToApiByParams(url: string, queryParams?: any, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         request.params = queryParams
         request.method = this.GET;
