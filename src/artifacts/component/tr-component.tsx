@@ -196,18 +196,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
-    public validateApiResponseData(errors: Array<object>) {
-        errors.map((field: any) => {
-            let name = field.fieldName;
-            let message = field.message;
+    public validateApiResponseData(errors: Object) {
+        for (let [name, message] of Object.entries(errors)) {
             if (this.state.formDefinition.get(name) === undefined) {
                 this.addFormDefinition(name, new TrFormDefinitionData({
                     required: true,
                     errorMessage: message,
                 }));
             }
-            this.setUnsetInputDataError(name, true, message);
-        })
+            this.updateFormDefinitionData(name, true, message)
+        }
     }
 
     private checkCustomValidation(definition: TrFormDefinitionData, name: any): boolean {
