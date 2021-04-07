@@ -251,6 +251,18 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
+    public setDefaultValues(keyValues: object) {
+        let _this = this;
+        if (keyValues) {
+            for (let [name, value] of Object.entries(keyValues)) {
+                _this.setDefaultInputValue(name, value);
+            }
+            this.setState<never>({
+                ["_input_data_default"]: "init",
+            });
+        }
+    }
+
     public getFormData(name: string, defaultValue: any = "") {
         if (this.state.formData && this.state.formData[name]) {
             return this.state.formData[name];
