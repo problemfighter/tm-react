@@ -360,6 +360,28 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         return this.inputDataHandler(name, changeEvent);
     }
 
+    public handleSwitchInputDataChange(name: string, changeEvent?: TREvent) {
+        let attributes: { [key: string]: any } = {};
+        let definition: TrFormDefinitionData = this.getFieldDefinition(name);
+        attributes.name = name;
+        attributes.onChange = (event: any) => {
+            const target = event.target;
+            const name = target.name;
+            let value = target.checked;
+            this.onChangeSetInputValue(name, value);
+            if (changeEvent && changeEvent.fire) {
+                changeEvent.fire(event);
+            }
+        };
+        attributes.value = this.getInputValue(name);
+        if (attributes.value) {
+            attributes.checked = true
+        } else {
+            attributes.checked = false
+        }
+        return attributes
+    }
+
     public addFormDefinition(name: string, fullDefinition?: TrFormDefinitionData) {
         let definition: TrFormDefinitionData = fullDefinition ? fullDefinition : new TrFormDefinitionData();
         definition.name = name;
