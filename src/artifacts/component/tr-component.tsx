@@ -245,6 +245,10 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
     }
 
+    public setValueToFormData(name: string, value: any) {
+        this.onChangeSetInputValue(name, value)
+    }
+
     public setDefaultInputValue(name: string, value: any) {
         if (this.state.formData) {
             this.state.formData[name] = value;
@@ -299,7 +303,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         return files;
     }
 
-    private inputDataHandler(name: string, changeEvent?: TREvent) {
+    private inputDataHandler(name: string, changeEvent?: TREvent, blurEvent?: TREvent) {
         let attributes: { [key: string]: any } = {};
         let definition: TrFormDefinitionData = this.getFieldDefinition(name);
         attributes.name = name;
@@ -324,6 +328,9 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         attributes.onBlur = (event: any) => {
             if (event && event.target && event.target.name) {
                 this.setUnsetInputDataError(event.target.name);
+            }
+            if (blurEvent && blurEvent.fire) {
+                blurEvent.fire(event);
             }
         };
 
@@ -356,8 +363,8 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
     }
 
 
-    public handleInputDataChange(name: string, changeEvent?: TREvent) {
-        return this.inputDataHandler(name, changeEvent);
+    public handleInputDataChange(name: string, changeEvent?: TREvent, blurEvent?: TREvent) {
+        return this.inputDataHandler(name, changeEvent, blurEvent);
     }
 
     public handleSwitchInputDataChange(name: string, changeEvent?: TREvent) {
