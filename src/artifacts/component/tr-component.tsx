@@ -395,6 +395,23 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.state.formDefinition.set(name, definition);
     }
 
+    public getFormDefinition(name: string) {
+        return this.state.formDefinition.get(name);
+    }
+
+    public conditionalNotRequired(name: string, isRequired: boolean) {
+        let definition = this.getFormDefinition(name)
+        if (definition) {
+            definition.required = isRequired
+            this.updateFormDefinition(definition)
+        }
+    }
+
+    public updateFormDefinition(fullDefinition: TrFormDefinitionData) {
+        let name = fullDefinition.name ? fullDefinition.name : ""
+        return this.state.formDefinition.set(name, fullDefinition);
+    }
+
     public setFormDefinition(fullDefinition: Map<string, TrFormDefinitionData>) {
         this.state.setFormDefinition(fullDefinition);
     }
