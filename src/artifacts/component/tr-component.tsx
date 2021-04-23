@@ -12,7 +12,6 @@ import {TrFormDefinitionData} from "../data/tr-form-definition-data";
 import {SortDirection} from "react-mui-ui/ui/tr-table-header";
 import {TrUtil} from "../util/tr-util";
 import TRStaticHolder from "../util/tr-static-holder";
-import {List} from "../../../../react-mui-ui/ui/ui-component";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
@@ -359,7 +358,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
 
         let inputValue = this.getInputValue(name)
-        if (inputValue && inputValue instanceof Array && inputValue.length !== 0 && inputValue[0] instanceof File) {
+        if (inputValue && inputValue instanceof Array && inputValue.some((item: any) => item instanceof File)) {
             inputValue = ""
         }
         attributes.value = inputValue
@@ -541,6 +540,16 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().post(request, callback);
     }
 
+    public postFileToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback, onUploadProgress?: any): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.headers = request.headers = TrUtil.addDataToObject(request.headers, 'Content-Type', 'multipart/form-data');
+        request.method = this.POST;
+        request.onDownloadProgress = onUploadProgress;
+        request.requestData = this.processDataToFormData(data);
+        let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
+        this.httpCaller().post(request, callback);
+    }
+
     public putToApi(url: string, data: object, success?: HTTPCallback, failed?: HTTPCallback): void {
         let request: TRHTTRequest = this.httpRequestData(url);
         request.method = this.PUT;
@@ -549,9 +558,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.httpCaller().put(request, callback);
     }
 
-    public postFormDataToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
-        let request: TRHTTRequest = this.httpRequestData(url);
-        request.method = this.POST;
+    private processDataToFormData(data: any) {
         let formData = new FormData();
         if (data) {
             for (let key in data) {
@@ -565,7 +572,13 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
                 }
             }
         }
-        request.requestData = formData;
+        return formData
+    }
+
+    public postFormDataToApi(url: string, data: any, success?: HTTPCallback, failed?: HTTPCallback): void {
+        let request: TRHTTRequest = this.httpRequestData(url);
+        request.method = this.POST;
+        request.requestData = this.processDataToFormData(data);
         let callback: TRHTTCallback = this.createHttpCallBack(request, success, failed);
         this.httpCaller().post(request, callback);
     }

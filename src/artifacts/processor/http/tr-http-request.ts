@@ -10,5 +10,7 @@ export default class TRHTTRequest {
     public headers?: any;
     public timeoutMS: number = 60000;
     public authCallback?: TRHTTAuthCallback;
+    public onUploadProgress?: (progressEvent: any) => void;
+    public onDownloadProgress?: (progressEvent: any) => void;
 
 }

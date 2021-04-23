@@ -20,6 +20,8 @@ export default class AxiosHTTPManager implements TRHTTPManager {
             data: request.requestData,
             params: request.params,
             timeout: request.timeoutMS,
+            onUploadProgress: request.onUploadProgress,
+            onDownloadProgress: request.onDownloadProgress,
         }
 
         if (request.headers !== undefined) {
