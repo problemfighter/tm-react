@@ -40,6 +40,10 @@ export default class AxiosHTTPManager implements TRHTTPManager {
         return this.addHeader(headers, 'Content-Type', 'application/json');
     }
 
+    private addMultipartHeader(headers: any): any {
+        return this.addHeader(headers, 'Content-Type', 'multipart/form-data');
+    }
+
     private createResponse(isSuccess: boolean, response: any) {
         return {
             isSuccess: isSuccess,

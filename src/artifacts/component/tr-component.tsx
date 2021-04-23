@@ -12,6 +12,7 @@ import {TrFormDefinitionData} from "../data/tr-form-definition-data";
 import {SortDirection} from "react-mui-ui/ui/tr-table-header";
 import {TrUtil} from "../util/tr-util";
 import TRStaticHolder from "../util/tr-static-holder";
+import {List} from "../../../../react-mui-ui/ui/ui-component";
 
 
 export default class TRComponent<P extends TRProps, S extends TRComponentState> extends TRReactComponent<P, S> {
@@ -353,12 +354,11 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             attributes.defaultValue = definition.defaultValue;
         }
 
-
-        if (!definition && name) {
-            attributes.value = this.getInputValue(name);
-        } else if (definition && definition.fillValue) {
-            attributes.value = this.getInputValue(name);
+        let inputValue = this.getInputValue(name)
+        if (inputValue && inputValue instanceof Array && inputValue.length !== 0 && inputValue[0] instanceof File) {
+            inputValue = ""
         }
+        attributes.value = inputValue
         return attributes;
     }
 
