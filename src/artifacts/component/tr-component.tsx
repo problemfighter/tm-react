@@ -250,6 +250,10 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         this.onChangeSetInputValue(name, value)
     }
 
+    public getValueFromFormData(name: string) {
+        return this.getFormData(name)
+    }
+
     public setDefaultInputValue(name: string, value: any) {
         if (this.state.formData) {
             this.state.formData[name] = value;
