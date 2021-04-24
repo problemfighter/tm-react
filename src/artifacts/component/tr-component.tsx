@@ -372,7 +372,6 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
 
     public handleSwitchInputDataChange(name: string, changeEvent?: TREvent) {
         let attributes: { [key: string]: any } = {};
-        let definition: TrFormDefinitionData = this.getFieldDefinition(name);
         attributes.name = name;
         attributes.onChange = (event: any) => {
             const target = event.target;
