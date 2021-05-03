@@ -307,7 +307,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         return files;
     }
 
-    private inputDataHandler(name: string, changeEvent?: TREvent, blurEvent?: TREvent) {
+    private inputDataHandler(name: string, changeEvent?: TREvent, blurEvent?: TREvent, inputType?: string) {
         let attributes: { [key: string]: any } = {};
         let definition: TrFormDefinitionData = this.getFieldDefinition(name);
         attributes.name = name;
@@ -358,13 +358,20 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         }
 
         let inputValue = this.getInputValue(name)
-        if (inputValue && inputValue instanceof Array && inputValue.some((item: any) => item instanceof File)) {
+        if (inputValue && ((inputValue instanceof Array && inputValue.some((item: any) => item instanceof File)) || (inputValue instanceof File))) {
             inputValue = ""
+        } else if (inputType && inputType === "file") {
+            inputValue = ""
+            attributes.type = inputType
         }
         attributes.value = inputValue
         return attributes;
     }
 
+
+    public handleInputDataChangeByType(name: string, type: string, changeEvent?: TREvent, blurEvent?: TREvent) {
+        return this.inputDataHandler(name, changeEvent, blurEvent, type);
+    }
 
     public handleInputDataChange(name: string, changeEvent?: TREvent, blurEvent?: TREvent) {
         return this.inputDataHandler(name, changeEvent, blurEvent);
