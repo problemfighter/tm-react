@@ -6,4 +6,9 @@ export default class TrLoadDataPrams {
         this.isReset = true
         return this
     }
+
+    public setParams(params: any): TrLoadDataPrams {
+        this.params = params
+        return this
+    }
 }
