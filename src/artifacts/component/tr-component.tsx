@@ -58,8 +58,7 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
         });
     }
 
-    componentDidMount() {
-    }
+    componentDidMount() {}
 
     public setActionTimer(task: any, terminateAfterMS: number = 5000) {
         return setTimeout(() => {
@@ -232,6 +231,9 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
                 }
             });
         }
+        if (!isValid) {
+            this.showErrorFlash("Validation Error")
+        }
         return isValid;
     }
 
@@ -276,6 +278,12 @@ export default class TRComponent<P extends TRProps, S extends TRComponentState> 
             return this.state.formData[name];
         }
         return defaultValue;
+    }
+
+    public removeFormDataElement(name: string) {
+        if (this.state.formData && this.state.formData[name]) {
+            delete this.state.formData[name]
+        }
     }
 
     private getInputValue(name: string) {
